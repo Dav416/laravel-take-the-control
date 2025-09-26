@@ -1,61 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Take The Control - Gestor de Finanzas Personales  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es un **prototipo académico** desarrollado en **Laravel** para la gestión de usuarios dentro de la aplicación **Take The Control**, orientada al manejo de finanzas personales.  
 
-## About Laravel
+Incluye:  
+- CRUD de usuarios.  
+- Inicio de sesión y autenticación.  
+- API accesible mediante **Postman** o **Insomnia**.  
+- Pruebas unitarias con **PHPUnit**.  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Requisitos previos  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sistema:  
 
-## Learning Laravel
+1. **PHP 8.2 o superior**  
+   - Recomendado instalar con [XAMPP](https://www.apachefriends.org/) o [Laragon](https://laragon.org/).  
+   - Habilitar extensiones en `php.ini`:  
+     - `pdo_mysql`  
+     - `mbstring`  
+     - `openssl`  
+     - `tokenizer`  
+     - `xml`  
+     - `fileinfo`  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. **Composer**  
+   - Gestor de dependencias de PHP: [https://getcomposer.org/download/](https://getcomposer.org/download/).  
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+3. **MariaDB/MySQL**  
+   - El proyecto utiliza la base de datos `take_the_control`.  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+4. **Node.js y npm** (opcional, solo si se compilan assets).  
 
-## Laravel Sponsors
+5. **Git** (para clonar el repositorio).  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+6. **Postman o Insomnia** para probar las APIs.  
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 📥 Instalación del proyecto  
 
-## Contributing
+1. **Clonar el repositorio**  
+```bash
+    git clone <URL_DEL_REPOSITORIO>
+    cd laravel-take-the-control
+```
+2. **Instalar dependencias**
+```bash
+    composer install
+```
+3. **Configurar el archivo de entorno**
+   - Copiar el archivo de ejemplo
+```bash
+    cp .env.example .env
+```
+    - Luego editar .env con la configuración de la base de datos:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        ```bash
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=take_the_control
+        DB_USERNAME=root
+        DB_PASSWORD=
+        ```
+4. **Generar la key de la aplicación**
+```bash
+    php artisan key:generate
+```
+5. **Ejecutar migraciones y seeders**
+```bash
+    php artisan migrate
+    php artisan db:seed
+```
+6. **Levantar servidor  de desarrollo**
+```bash
+    php artisan serve
+```
+Acceder a la ruta: http://127.0.0.1:8000
 
-## Code of Conduct
+## Endpoints principales
+**Usuarios**
+- GET /api/usuarios → Listar usuarios.
+- POST /api/usuarios → Crear usuario.
+- GET /api/usuarios/{id} → Ver detalle de usuario.
+- PUT /api/usuarios/{id} → Actualizar usuario.
+- DELETE /api/usuarios/{id} → Eliminar usuario.
+**Autenticación**
+- POST /api/login → Iniciar sesión.
+- POST /api/logout → Cerrar sesión.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Pruebas unitarias con PHPUnit
+Para ejecutar las pruebas unitarias, ejecutar el siguiente comando en la terminal:
+```bash
+    php artisan test
+```
+## Pruebas de API con Postman o Insomnia
+Puedes importar el archivo TakeTheControl.postman_collection.json en Postman o Insomnia para probar todos los endpoints.
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Notas Finales
+- Este prototipo está diseñado con fines académicos, orientado a la validación de CRUD de usuarios y autenticación en Laravel.
+- Puede extenderse fácilmente para incluir más módulos del gestor de finanzas personales (ingresos, gastos, proyecciones).
