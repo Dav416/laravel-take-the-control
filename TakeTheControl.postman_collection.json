@@ -138,9 +138,9 @@
           "raw": "{\n  \"correo_usuario\": \"david@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
         },
         "url": {
-          "raw": "{{base_url}}/{{api_prefix}}/login",
+          "raw": "{{base_url}}/login",
           "host": ["{{base_url}}"],
-          "path": ["{{api_prefix}}", "login"]
+          "path": ["login"]
         }
       }
     },
@@ -155,9 +155,9 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/{{api_prefix}}/logout",
+          "raw": "{{base_url}}/logout",
           "host": ["{{base_url}}"],
-          "path": ["{{api_prefix}}", "logout"]
+          "path": ["logout"]
         }
       }
     }
