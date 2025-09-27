@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -13,15 +12,33 @@ class UsuarioController extends Controller
     /**
      * Mostrar listado de usuarios
      */
-    public function index()
+public function index(Request $request)
     {
         try {
             $usuarios = Usuario::all();
-            return response()->json($usuarios);
+
+            if ($request->wantsJson()) {
+                return response()->json($usuarios);
+            }
+
+            return view('dashboard', compact('usuarios'));
         } catch (\Exception $e) {
             Log::error('Error en index: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Error interno del servidor'], 500);
+            }
+
+            return back()->withErrors(['error' => 'Error cargando usuarios']);
         }
+    }
+
+    /**
+     * Mostrar formulario para crear usuario
+     */
+      public function create()
+    {
+        return view('usuarios.create');
     }
 
     /**
@@ -37,41 +54,70 @@ class UsuarioController extends Controller
                 'clave_usuario' => 'required|string|min:6',
             ]);
 
-
+            $validated['clave_usuario'] = Hash::make($validated['clave_usuario']);
             $usuario = Usuario::create($validated);
 
-            return response()->json([
-                'message' => 'Usuario creado exitosamente',
-                'usuario' => $usuario,
-            ], 201);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Usuario creado exitosamente',
+                    'usuario' => $usuario,
+                ], 201);
+            }
+
+            return redirect()->route('dashboard')->with('success', 'Usuario creado correctamente');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            if ($request->wantsJson()) {
+                return response()->json(['errors' => $e->errors()], 422);
+            }
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             Log::error('Error creando usuario: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
+
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Error interno del servidor'], 500);
+            }
+            return back()->withErrors(['error' => 'Error creando usuario']);
         }
     }
 
     /**
      * Mostrar un usuario específico
      */
-    public function show($id)
+ public function show(Request $request, $id)
     {
         try {
             $usuario = Usuario::findOrFail($id);
-            return response()->json($usuario);
+
+            if ($request->wantsJson()) {
+                return response()->json($usuario);
+            }
+
+            return view('usuarios.show', compact('usuario'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+            return back()->withErrors(['error' => 'Usuario no encontrado']);
         } catch (\Exception $e) {
             Log::error('Error mostrando usuario: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Error interno del servidor'], 500);
+            }
+            return back()->withErrors(['error' => 'Error mostrando usuario']);
         }
+    }
+
+    public function edit($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return view('usuarios.edit', compact('usuario'));
     }
 
     /**
      * Actualizar usuario
      */
-    public function update(Request $request, $id)
+   public function update(Request $request, $id)
     {
         try {
             $usuario = Usuario::findOrFail($id);
@@ -83,39 +129,68 @@ class UsuarioController extends Controller
                 'clave_usuario' => 'nullable|string|min:6',
             ]);
 
-            // Remover campos vacíos para evitar sobreescribir con null
-            $validated = array_filter($validated, function($value) {
-                return $value !== null && $value !== '';
-            });
+            if (isset($validated['clave_usuario']) && $validated['clave_usuario']) {
+                $validated['clave_usuario'] = Hash::make($validated['clave_usuario']);
+            } else {
+                unset($validated['clave_usuario']);
+            }
 
             $usuario->update($validated);
 
-            return response()->json([
-                'message' => 'Usuario actualizado exitosamente',
-                'usuario' => $usuario->fresh(), // Obtener la versión actualizada
-            ]);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Usuario actualizado exitosamente',
+                    'usuario' => $usuario->fresh(),
+                ]);
+            }
+
+            return redirect()->route('dashboard')->with('success', 'Usuario actualizado correctamente');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+            return back()->withErrors(['error' => 'Usuario no encontrado']);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            if ($request->wantsJson()) {
+                return response()->json(['errors' => $e->errors()], 422);
+            }
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             Log::error('Error actualizando usuario: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
+
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Error interno del servidor'], 500);
+            }
+            return back()->withErrors(['error' => 'Error actualizando usuario']);
         }
     }
 
-    public function destroy($id)
+    /**
+     * Eliminar usuario
+    */
+    public function destroy(Request $request, $id)
     {
         try {
             $usuario = Usuario::findOrFail($id);
             $usuario->delete();
 
-            return response()->json(['message' => 'Usuario eliminado exitosamente']);
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Usuario eliminado exitosamente']);
+            }
+
+            return redirect()->route('dashboard')->with('error', 'Usuario eliminado correctamente');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+            return back()->withErrors(['error' => 'Usuario no encontrado']);
         } catch (\Exception $e) {
             Log::error('Error eliminando usuario: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Error interno del servidor'], 500);
+            }
+            return back()->withErrors(['error' => 'Error eliminando usuario']);
         }
     }
 
@@ -141,16 +216,7 @@ class UsuarioController extends Controller
         return view('dashboard', compact('usuarios'));
     }
 
-    public function create()
-    {
-        return view('usuarios.create');
-    }
 
-    public function edit($id)
-    {
-        $usuario = Usuario::findOrFail($id);
-        return view('usuarios.edit', compact('usuario'));
-    }
 
     /**
      * Procesa el login (POST)
