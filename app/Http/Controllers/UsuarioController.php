@@ -32,13 +32,11 @@ class UsuarioController extends Controller
         try {
             $validated = $request->validate([
                 'nombre_usuario' => 'required|string|max:255',
-                'nombre_cuenta_usuario' => 'required|string|max:255|unique:usuarios,nombre_cuenta_usuario',
-                'correo_usuario' => 'required|email|unique:usuarios,correo_usuario',
+                'nombre_cuenta_usuario' => 'required|string|max:255|unique:Usuarios,nombre_cuenta_usuario',
+                'correo_usuario' => 'required|email|max:255|unique:Usuarios,correo_usuario',
                 'clave_usuario' => 'required|string|min:6',
             ]);
 
-            // Hashear la contraseña
-            $validated['clave_usuario'] = Hash::make($validated['clave_usuario']);
 
             $usuario = Usuario::create($validated);
 
@@ -50,7 +48,7 @@ class UsuarioController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Error creando usuario: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+            return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
         }
     }
 
@@ -80,21 +78,21 @@ class UsuarioController extends Controller
 
             $validated = $request->validate([
                 'nombre_usuario' => 'sometimes|string|max:255',
-                'nombre_cuenta_usuario' => "sometimes|string|max:255|unique:usuarios,nombre_cuenta_usuario,{$id},id_usuario",
-                'correo_usuario' => "sometimes|email|unique:usuarios,correo_usuario,{$id},id_usuario",
+                'nombre_cuenta_usuario' => "sometimes|string|max:255|unique:Usuarios,nombre_cuenta_usuario,{$id},id_usuario",
+                'correo_usuario' => "sometimes|email|max:255|unique:Usuarios,correo_usuario,{$id},id_usuario",
                 'clave_usuario' => 'nullable|string|min:6',
             ]);
 
-            // Hashear la contraseña si se proporciona
-            if (isset($validated['clave_usuario'])) {
-                $validated['clave_usuario'] = Hash::make($validated['clave_usuario']);
-            }
+            // Remover campos vacíos para evitar sobreescribir con null
+            $validated = array_filter($validated, function($value) {
+                return $value !== null && $value !== '';
+            });
 
             $usuario->update($validated);
 
             return response()->json([
                 'message' => 'Usuario actualizado exitosamente',
-                'usuario' => $usuario,
+                'usuario' => $usuario->fresh(), // Obtener la versión actualizada
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
@@ -102,13 +100,10 @@ class UsuarioController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Error actualizando usuario: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+            return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Eliminar usuario
-     */
     public function destroy($id)
     {
         try {
@@ -135,15 +130,19 @@ class UsuarioController extends Controller
                 'clave_usuario' => 'required|string',
             ]);
 
-            // Intento de autenticación con los campos personalizados
-            if (Auth::attempt([
-                'correo_usuario' => $credentials['correo_usuario'],
-                'password' => $credentials['clave_usuario']
-            ])) {
-                $user = Auth::user();
+            // Buscar directamente en el modelo Usuario
+            $usuario = Usuario::where('correo_usuario', $credentials['correo_usuario'])->first();
+
+            if (!$usuario) {
+                return response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+
+            // Verificar contraseña
+            if (Hash::check($credentials['clave_usuario'], $usuario->clave_usuario)) {
+                // Login manual exitoso
                 return response()->json([
                     'message' => 'Inicio de sesión exitoso',
-                    'usuario' => $user,
+                    'usuario' => $usuario,
                 ]);
             }
 
@@ -152,7 +151,7 @@ class UsuarioController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Error en login: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+            return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
         }
     }
 

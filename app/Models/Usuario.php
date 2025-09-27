@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
 
 class Usuario extends Authenticatable
 {
     use Notifiable, SoftDeletes;
 
-    // Nombre real de la tabla (con mayúscula como en tu DB)
+    // Nombre real de la tabla
     protected $table = 'Usuarios';
 
     // Clave primaria personalizada
@@ -42,32 +43,44 @@ class Usuario extends Authenticatable
         'fecha_eliminacion' => 'datetime',
     ];
 
-    // ⚡️ Para que Laravel use 'clave_usuario' en vez de 'password'
-    public function getAuthPassword()
-    {
-        return $this->clave_usuario;
-    }
-
-    // ⚡️ Para que Laravel use 'correo_usuario' como identificador
+    // Para que Laravel use 'correo_usuario' como identificador
     public function getAuthIdentifierName()
     {
         return 'correo_usuario';
     }
 
-    // ⚡️ Mutador: cada vez que guardes una clave, la encripta automáticamente
+    // Para que Laravel use 'clave_usuario' en vez de 'password'
+    public function getAuthPassword()
+    {
+        return $this->clave_usuario;
+    }
+
+    // Mutador para contraseñas - versión simple y segura
     public function setClaveUsuarioAttribute($value)
     {
-        // Solo encriptar si no está ya encriptada y no está vacía
-        if (!empty($value) && !password_get_info($value)['algo']) {
-            $this->attributes['clave_usuario'] = bcrypt($value);
-        } elseif (!empty($value)) {
-            $this->attributes['clave_usuario'] = $value;
+        if (!empty($value)) {
+            // Verificar si ya está hasheada usando password_get_info
+            $info = password_get_info($value);
+
+            // Si no tiene algoritmo, no está hasheada
+            if ($info['algo'] === null || $info['algo'] === 0) {
+                $this->attributes['clave_usuario'] = Hash::make($value);
+            } else {
+                // Ya está hasheada, guardar tal como está
+                $this->attributes['clave_usuario'] = $value;
+            }
         }
     }
 
-    // Accessor para compatibilidad (Laravel espera 'email' en algunos casos)
+    // Accessor para compatibilidad con Laravel
     public function getEmailAttribute()
     {
         return $this->correo_usuario;
+    }
+
+    // Método para verificar contraseña
+    public function checkPassword($password)
+    {
+        return Hash::check($password, $this->clave_usuario);
     }
 }
