@@ -5,18 +5,33 @@
     "description": "Colección para probar CRUD de usuarios y autenticación en Laravel.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "api_prefix",
+      "value": "api",
+      "type": "string"
+    }
+  ],
   "item": [
     {
       "name": "Listar Usuarios",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
         "url": {
-          "raw": "http://127.0.0.1:8000/usuarios",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["usuarios"]
+          "raw": "{{base_url}}/{{api_prefix}}/usuarios",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "usuarios"]
         }
       }
     },
@@ -25,18 +40,23 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type", "value": "application/json" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"nombre_usuario\": \"David Zamora\",\n  \"nombre_cuenta_usuario\": \"dzamora\",\n  \"correo_usuario\": \"david@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
         },
         "url": {
-          "raw": "http://127.0.0.1:8000/usuarios",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["usuarios"]
+          "raw": "{{base_url}}/{{api_prefix}}/usuarios",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "usuarios"]
         }
       }
     },
@@ -44,13 +64,16 @@
       "name": "Ver Usuario por ID",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
         "url": {
-          "raw": "http://127.0.0.1:8000/usuarios/1",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["usuarios", "1"]
+          "raw": "{{base_url}}/{{api_prefix}}/usuarios/1",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "usuarios", "1"]
         }
       }
     },
@@ -59,18 +82,23 @@
       "request": {
         "method": "PUT",
         "header": [
-          { "key": "Content-Type", "value": "application/json" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"nombre_usuario\": \"David Actualizado\",\n  \"correo_usuario\": \"david2@example.com\"\n}"
         },
         "url": {
-          "raw": "http://127.0.0.1:8000/usuarios/1",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["usuarios", "1"]
+          "raw": "{{base_url}}/{{api_prefix}}/usuarios/1",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "usuarios", "1"]
         }
       }
     },
@@ -78,13 +106,16 @@
       "name": "Eliminar Usuario",
       "request": {
         "method": "DELETE",
-        "header": [],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
         "url": {
-          "raw": "http://127.0.0.1:8000/usuarios/1",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["usuarios", "1"]
+          "raw": "{{base_url}}/{{api_prefix}}/usuarios/1",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "usuarios", "1"]
         }
       }
     },
@@ -93,18 +124,23 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type", "value": "application/json" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"correo_usuario\": \"david@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
         },
         "url": {
-          "raw": "http://127.0.0.1:8000/login",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["login"]
+          "raw": "{{base_url}}/{{api_prefix}}/login",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "login"]
         }
       }
     },
@@ -112,13 +148,16 @@
       "name": "Logout",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
         "url": {
-          "raw": "http://127.0.0.1:8000/logout",
-          "protocol": "http",
-          "host": ["127.0.0.1"],
-          "port": "8000",
-          "path": ["logout"]
+          "raw": "{{base_url}}/{{api_prefix}}/logout",
+          "host": ["{{base_url}}"],
+          "path": ["{{api_prefix}}", "logout"]
         }
       }
     }
