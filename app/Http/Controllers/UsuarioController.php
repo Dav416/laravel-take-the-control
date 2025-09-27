@@ -119,53 +119,83 @@ class UsuarioController extends Controller
         }
     }
 
+
     /**
-     * Login de usuario
+     * Muestra el formulario de login (GET)
+     */
+    public function showLoginForm()
+    {
+        return view('login');
+    }
+
+    /**
+     * Muestra el dashboard (GET)
+     */
+    public function dashboard()
+    {
+        if (!session('usuario')) {
+            return redirect()->route('login');
+        }
+
+        return view('dashboard');
+    }
+
+
+    /**
+     * Procesa el login (POST)
      */
     public function login(Request $request)
     {
         try {
+            // 1. Validar inputs
             $credentials = $request->validate([
                 'correo_usuario' => 'required|email',
-                'clave_usuario' => 'required|string',
+                'clave_usuario'  => 'required|string',
             ]);
 
-            // Buscar directamente en el modelo Usuario
+            // 2. Buscar usuario por correo
             $usuario = Usuario::where('correo_usuario', $credentials['correo_usuario'])->first();
 
             if (!$usuario) {
-                return response()->json(['message' => 'Usuario no encontrado'], 404);
+                return back()->withErrors([
+                    'correo_usuario' => 'Verifique su correo electrónico'
+                ])->withInput();
             }
 
-            // Verificar contraseña
-            if (Hash::check($credentials['clave_usuario'], $usuario->clave_usuario)) {
-                // Login manual exitoso
-                return response()->json([
-                    'message' => 'Inicio de sesión exitoso',
-                    'usuario' => $usuario,
-                ]);
+            // 3. Validar contraseña
+            if (!Hash::check($credentials['clave_usuario'], $usuario->clave_usuario)) {
+                return back()->withErrors([
+                    'clave_usuario' => 'Verifique su contraseña'
+                ])->withInput();
             }
 
-            return response()->json(['message' => 'Credenciales incorrectas'], 401);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            // 4. Guardar usuario en sesión
+            session(['usuario' => $usuario]);
+
+            // 5. Redirigir al dashboard
+            return redirect()->route('dashboard');
+
         } catch (\Exception $e) {
             Log::error('Error en login: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
+            return back()->withErrors([
+                'error' => 'Error interno, intenta más tarde.'
+            ]);
         }
     }
 
     /**
-     * Logout de usuario
+     * Logout de usuario (POST)
      */
-    public function logout()
+    public function logout(Request $request)
     {
         try {
-            Auth::logout();
-            return response()->json(['message' => 'Sesión cerrada correctamente']);
+            $request->session()->forget('usuario');
+            return redirect()->route('login');
         } catch (\Exception $e) {
             Log::error('Error en logout: ' . $e->getMessage());
-            return response()->json(['error' => 'Error interno del servidor'], 500);
+            return back()->withErrors([
+                'error' => 'Error interno en el logout'
+            ]);
         }
     }
 }
