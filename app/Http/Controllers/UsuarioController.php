@@ -141,6 +141,16 @@ class UsuarioController extends Controller
         return view('dashboard', compact('usuarios'));
     }
 
+    public function create()
+    {
+        return view('usuarios.create');
+    }
+
+    public function edit($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        return view('usuarios.edit', compact('usuario'));
+    }
 
     /**
      * Procesa el login (POST)
