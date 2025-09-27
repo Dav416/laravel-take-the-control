@@ -51,7 +51,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre_usuario\": \"David Zamora\",\n  \"nombre_cuenta_usuario\": \"dzamora\",\n  \"correo_usuario\": \"david@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
+          "raw": "{\n  \"nombre_usuario\": \"Test\",\n  \"nombre_cuenta_usuario\": \"testing\",\n  \"correo_usuario\": \"test@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/{{api_prefix}}/usuarios",
@@ -93,7 +93,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre_usuario\": \"David Actualizado\",\n  \"correo_usuario\": \"david2@example.com\"\n}"
+          "raw": "{\n  \"nombre_usuario\": \"Test Actualizado\",\n  \"correo_usuario\": \"test2@example.com\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/{{api_prefix}}/usuarios/1",
@@ -135,7 +135,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"correo_usuario\": \"david@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
+          "raw": "{\n  \"correo_usuario\": \"test@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/login",
