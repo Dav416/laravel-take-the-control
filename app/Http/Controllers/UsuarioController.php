@@ -137,7 +137,8 @@ class UsuarioController extends Controller
             return redirect()->route('login');
         }
 
-        return view('dashboard');
+        $usuarios = Usuario::all();
+        return view('dashboard', compact('usuarios'));
     }
 
 
