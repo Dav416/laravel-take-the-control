@@ -1,6 +1,6 @@
 # Take The Control - Gestor de Finanzas Personales  
 
-Este proyecto es un **prototipo académico** desarrollado en **Laravel** para la gestión de usuarios dentro de la aplicación **Take The Control**, orientada al manejo de finanzas personales.  
+Este proyecto es un **prototipo** desarrollado en **Laravel** para la gestión de usuarios y autenticación a través de login dentro de la aplicación **Take The Control**, orientada al manejo de finanzas personales.  
 
 Incluye:  
 - CRUD de usuarios.  
@@ -10,7 +10,7 @@ Incluye:
 
 ---
 
-## 🚀 Requisitos previos  
+## Requisitos previos  
 
 Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sistema:  
 
@@ -28,7 +28,7 @@ Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sist
 
 ---
 
-## 📥 Instalación del proyecto  
+## Instalación del proyecto  
 
 1. **Clonar el repositorio**  
 ```bash
@@ -92,4 +92,4 @@ Para ejecutar las pruebas unitarias, ejecutar el siguiente comando en la termina
 Puedes importar el archivo users.collection.json en Postman o Insomnia para probar todos los endpoints.
 
 ## Notas
-- Este prototipo está diseñado con fines académicos, orientado a la validación de CRUD de usuarios y autenticación en Laravel.
+- Este prototipo está orientado al CRUD del módulo de usuarios y al login. Haciendo uso de APIS.
