@@ -15,14 +15,6 @@ Incluye:
 Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sistema:  
 
 1. **PHP 8.2 o superior**  
-   - Recomendado instalar con [XAMPP](https://www.apachefriends.org/) o [Laragon](https://laragon.org/).  
-   - Habilitar extensiones en `php.ini`:  
-     - `pdo_mysql`  
-     - `mbstring`  
-     - `openssl`  
-     - `tokenizer`  
-     - `xml`  
-     - `fileinfo`  
 
 2. **Composer**  
    - Gestor de dependencias de PHP: [https://getcomposer.org/download/](https://getcomposer.org/download/).  
@@ -40,7 +32,7 @@ Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sist
 
 1. **Clonar el repositorio**  
 ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone https://github.com/Dav416/laravel-take-the-control.git
     cd laravel-take-the-control
 ```
 2. **Instalar dependencias**
@@ -88,8 +80,8 @@ Acceder a la ruta: http://127.0.0.1:8000
 - PUT /api/usuarios/{id} → Actualizar usuario.
 - DELETE /api/usuarios/{id} → Eliminar usuario.
 **Autenticación**
-- POST /api/login → Iniciar sesión.
-- POST /api/logout → Cerrar sesión.
+- POST /login → Iniciar sesión.
+- POST /logout → Cerrar sesión.
 
 ## Pruebas unitarias con PHPUnit
 Para ejecutar las pruebas unitarias, ejecutar el siguiente comando en la terminal:
