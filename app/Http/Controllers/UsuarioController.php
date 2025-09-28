@@ -9,10 +9,24 @@ use Illuminate\Support\Facades\Log;
 
 class UsuarioController extends Controller
 {
+
+    /**
+     * Muestra el dashboard
+     */
+    public function dashboard()
+    {
+        if (!session('usuario')) {
+            return redirect()->route('login');
+        }
+
+        $usuarios = Usuario::all();
+        return view('dashboard', compact('usuarios'));
+    }
+
     /**
      * Mostrar listado de usuarios
      */
-public function index(Request $request)
+    public function index(Request $request)
     {
         try {
             $usuarios = Usuario::all();
@@ -38,6 +52,10 @@ public function index(Request $request)
      */
       public function create()
     {
+        if (!session('usuario')) {
+            return redirect()->route('login');
+        }
+
         return view('usuarios.create');
     }
 
@@ -110,6 +128,10 @@ public function index(Request $request)
 
     public function edit($id)
     {
+        if (!session('usuario')) {
+            return redirect()->route('login');
+        }
+
         $usuario = Usuario::findOrFail($id);
         return view('usuarios.edit', compact('usuario'));
     }
@@ -196,7 +218,7 @@ public function index(Request $request)
 
 
     /**
-     * Muestra el formulario de login (GET)
+     * Muestra el formulario de login
      */
     public function showLoginForm()
     {
@@ -204,22 +226,7 @@ public function index(Request $request)
     }
 
     /**
-     * Muestra el dashboard (GET)
-     */
-    public function dashboard()
-    {
-        if (!session('usuario')) {
-            return redirect()->route('login');
-        }
-
-        $usuarios = Usuario::all();
-        return view('dashboard', compact('usuarios'));
-    }
-
-
-
-    /**
-     * Procesa el login (POST)
+     * Procesa el login
      */
     public function login(Request $request)
     {
@@ -261,7 +268,7 @@ public function index(Request $request)
     }
 
     /**
-     * Logout de usuario (POST)
+     * Logout de usuario
      */
     public function logout(Request $request)
     {
