@@ -56,7 +56,7 @@ class Usuario extends Authenticatable
         return $this->clave_usuario;
     }
 
-    // Mutador para contraseñas - versión simple y segura
+    // Mutador para contraseñas
     public function setClaveUsuarioAttribute($value)
     {
         if (!empty($value)) {

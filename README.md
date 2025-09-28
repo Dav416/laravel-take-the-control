@@ -71,14 +71,16 @@ Contiene:
 7. **Acceder a la ruta:** http://127.0.0.1:8000
 
 8. **Iniciar sesión**
-- **Nota**: La base de datos viene alimentada con 2 usuarios fijos y 10 usuarios creados aleatoriamente.
+## Notas 
+- La base de datos viene alimentada con 2 usuarios fijos y 10 usuarios creados aleatoriamente.
+- La contraseña para los 12 usuarios existentes es por defecto `password123`.
 
 ## Credenciales disponibles
-### Usuario test
+### Usuario Test
 - Usuario:
 `test@example.com`
 - Contraseña:
-`test123`
+`password123`
 ### Usuario Prueba
 - Usuario:
 `user_test@example.com`

@@ -91,7 +91,7 @@ class UsuarioFeatureTest extends TestCase
     /**
      * Test hecho para que falle
      */
-    // public function test_api_error_eliminar_un_usuario()
+    // public function test_api_fail_eliminar_usuario()
     // {
     //     $usuario = Usuario::factory()->create();
 

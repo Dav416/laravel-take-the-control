@@ -14,7 +14,6 @@
                 <h4>Iniciar sesión</h4>
             </div>
             <div class="card-body">
-                <!-- Formulario de login -->
                 <form method="POST" action="{{ route('login.post') }}">
                     @csrf
 

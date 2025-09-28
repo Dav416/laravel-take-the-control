@@ -36,7 +36,7 @@ class UsuarioTest extends TestCase
     /**
      * Test hecho para que falle
      */
-    // public function test_model_no_eliminar_un_usuario()
+    // public function test_model_fail_eliminar_usuario()
     // {
     //     $usuario = Usuario::factory()->create();
     //     $usuarioId = $usuario->id_usuario;

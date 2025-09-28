@@ -9,15 +9,13 @@ class UsuariosSeeder extends Seeder
 {
     public function run(): void
     {
-        // Usuario administrador fijo
         Usuario::create([
-            'nombre_usuario'        => 'Usuario test',
+            'nombre_usuario'        => 'Usuario Test',
             'nombre_cuenta_usuario' => 'test',
             'correo_usuario'        => 'test@example.com',
-            'clave_usuario'         => bcrypt('test123'),
+            'clave_usuario'         => bcrypt('password123'),
         ]);
 
-        // Usuario prueba fijo
         Usuario::create([
             'nombre_usuario'        => 'Usuario Prueba',
             'nombre_cuenta_usuario' => 'user_test',
