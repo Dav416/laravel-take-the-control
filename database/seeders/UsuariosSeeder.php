@@ -11,10 +11,10 @@ class UsuariosSeeder extends Seeder
     {
         // Usuario administrador fijo
         Usuario::create([
-            'nombre_usuario'        => 'Administrador',
-            'nombre_cuenta_usuario' => 'admin',
-            'correo_usuario'        => 'admin@example.com',
-            'clave_usuario'         => bcrypt('admin123'),
+            'nombre_usuario'        => 'Usuario test',
+            'nombre_cuenta_usuario' => 'test',
+            'correo_usuario'        => 'test@example.com',
+            'clave_usuario'         => bcrypt('test123'),
         ]);
 
         // Usuario prueba fijo
