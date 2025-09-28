@@ -30,9 +30,7 @@ Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sist
 3. **MariaDB/MySQL**  
    - El proyecto utiliza la base de datos `take_the_control`.  
 
-4. **Node.js y npm** (opcional, solo si se compilan assets).  
-
-5. **Git** (para clonar el repositorio).  
+4. **Git** (para clonar el repositorio).  
 
 6. **Postman o Insomnia** para probar las APIs.  
 
@@ -68,12 +66,15 @@ Antes de clonar o ejecutar el proyecto, asegúrate de tener instalado en tu sist
 ```bash
     php artisan key:generate
 ```
-5. **Ejecutar migraciones y seeders**
-```bash
-    php artisan migrate
-    php artisan db:seed
+5. **Crear la base de datos**
+```sql
+    CREATE DATABASE take_the_control;
 ```
-6. **Levantar servidor  de desarrollo**
+6. **Ejecutar migraciones y seeders**
+```bash
+    php artisan migrate:fresh --seed
+```
+6. **Levantar servidor de desarrollo**
 ```bash
     php artisan serve
 ```
@@ -96,8 +97,7 @@ Para ejecutar las pruebas unitarias, ejecutar el siguiente comando en la termina
     php artisan test
 ```
 ## Pruebas de API con Postman o Insomnia
-Puedes importar el archivo TakeTheControl.postman_collection.json en Postman o Insomnia para probar todos los endpoints.
+Puedes importar el archivo users.collection.json en Postman o Insomnia para probar todos los endpoints.
 
-## Notas Finales
+## Notas
 - Este prototipo está diseñado con fines académicos, orientado a la validación de CRUD de usuarios y autenticación en Laravel.
-- Puede extenderse fácilmente para incluir más módulos del gestor de finanzas personales (ingresos, gastos, proyecciones).
