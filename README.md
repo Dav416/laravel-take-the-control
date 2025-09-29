@@ -105,3 +105,5 @@ Para ejecutar las pruebas unitarias, ejecutar el siguiente comando en la termina
 ```
 ## Pruebas de API con Postman o Insomnia
 Puedes importar el archivo `users.collection.json` en Postman o Insomnia para probar todos los endpoints.
+# Notas
+- Las APIS de `login` y `logout` funcionan exclusivamente desde la vista, debido a que exigen el protocolo CSRF. Por ello al utilizar Postman o Insomnia es normal encontrarse un `status code 419` indicando que falta el token CSRF.
