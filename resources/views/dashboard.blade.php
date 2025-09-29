@@ -8,7 +8,7 @@
 <body class="bg-light">
 
 <div class="container mt-5">
-    <h1>Bienvenido 🎉 <span class="text-success">{{ session('usuario')->nombre_usuario ?? 'Usuario' }}</span></h1>
+    <h1>Bienvenido 🎉 <span class="text-success">{{ Auth::user()->nombre_usuario ?? 'Usuario' }}</span></h1>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-primary">Listado de Usuarios</h2>
