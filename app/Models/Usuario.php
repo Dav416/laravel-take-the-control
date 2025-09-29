@@ -7,10 +7,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 
 class Usuario extends Authenticatable
 {
-    use HasFactory,Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory,Notifiable, SoftDeletes;
 
     // Nombre real de la tabla
     protected $table = 'Usuarios';

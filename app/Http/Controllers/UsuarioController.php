@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -15,7 +16,7 @@ class UsuarioController extends Controller
      */
     public function dashboard()
     {
-        if (!session('usuario')) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -50,9 +51,9 @@ class UsuarioController extends Controller
     /**
      * Mostrar formulario para crear usuario
      */
-      public function create()
+    public function create()
     {
-        if (!session('usuario')) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -101,7 +102,7 @@ class UsuarioController extends Controller
     /**
      * Mostrar un usuario específico
      */
- public function show(Request $request, $id)
+    public function show(Request $request, $id)
     {
         try {
             $usuario = Usuario::findOrFail($id);
@@ -128,7 +129,7 @@ class UsuarioController extends Controller
 
     public function edit($id)
     {
-        if (!session('usuario')) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -139,7 +140,7 @@ class UsuarioController extends Controller
     /**
      * Actualizar usuario
      */
-   public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $usuario = Usuario::findOrFail($id);
@@ -222,6 +223,10 @@ class UsuarioController extends Controller
      */
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('login');
     }
 
@@ -253,13 +258,15 @@ class UsuarioController extends Controller
                 ])->withInput();
             }
 
-            // 4. Guardar usuario en sesión
-            session(['usuario' => $usuario]);
+            // 4. Autenticar con Laravel Auth
+            Auth::login($usuario, $request->filled('remember'));
+            $request->session()->regenerate();
 
             if($request->wantsJson()) {
+                $token = $usuario->createToken('auth_token')->plainTextToken;
                 return response()->json([
                     'message' => 'Login exitoso',
-                    "token" => csrf_token()
+                    'token' => $token
                 ], 200);
             }
 
@@ -280,13 +287,16 @@ class UsuarioController extends Controller
     public function logout(Request $request)
     {
         try {
-            $request->session()->forget('usuario');
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             if($request->wantsJson()) {
                 return response()->json([
-                    'message' => 'Logout exitoso',
-                    'token' => csrf_token()
+                    'message' => 'Logout exitoso'
                 ], 200);
             }
+
             return redirect()->route('login');
         } catch (\Exception $e) {
             Log::error('Error en logout: ' . $e->getMessage());
