@@ -160,6 +160,23 @@
           "path": ["logout"]
         }
       }
+    },
+    {
+      "name": "Obtener CSRF Token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/csrf-token",
+          "host": ["{{base_url}}"],
+          "path": ["csrf-token"]
+        }
+      }
     }
   ]
 }
