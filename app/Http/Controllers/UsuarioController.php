@@ -256,6 +256,13 @@ class UsuarioController extends Controller
             // 4. Guardar usuario en sesión
             session(['usuario' => $usuario]);
 
+            if($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Login exitoso',
+                    "token" => csrf_token()
+                ], 200);
+            }
+
             // 5. Redirigir al dashboard
             return redirect()->route('dashboard');
 
@@ -274,6 +281,12 @@ class UsuarioController extends Controller
     {
         try {
             $request->session()->forget('usuario');
+            if($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Logout exitoso',
+                    'token' => csrf_token()
+                ], 200);
+            }
             return redirect()->route('login');
         } catch (\Exception $e) {
             Log::error('Error en logout: ' . $e->getMessage());
