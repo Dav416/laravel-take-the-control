@@ -105,5 +105,3 @@ Para ejecutar las pruebas unitarias, ejecutar el siguiente comando en la termina
 ```
 ## Pruebas de API con Postman o Insomnia
 Puedes importar el archivo `users.collection.json` en Postman o Insomnia para probar todos los endpoints.
-# Notas
-- Para usar la API, de `/logout`, es necesario generar un token a través de la ruta `/login` y agregar el token en la cabecera `Authorization`, como `Authorization: Bearer login_token`.
