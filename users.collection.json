@@ -51,7 +51,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre_usuario\": \"Test\",\n  \"nombre_cuenta_usuario\": \"testing\",\n  \"correo_usuario\": \"test@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
+          "raw": "{\n  \"nombre_usuario\": \"Test\",\n  \"nombre_cuenta_usuario\": \"testing\",\n  \"correo_usuario\": \"test@example.com\",\n  \"clave_usuario\": \"password123\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/{{api_prefix}}/usuarios",
@@ -135,7 +135,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"correo_usuario\": \"test@example.com\",\n  \"clave_usuario\": \"123456\"\n}"
+          "raw": "{\n  \"correo_usuario\": \"user_test@example.com\",\n  \"clave_usuario\": \"password123\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/login",
