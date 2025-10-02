@@ -9,7 +9,7 @@ class Transaccion extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'Transacciones';
+    protected $table = 'transacciones';
     protected $primaryKey = 'id_transaccion';
     public $timestamps = true;
 
@@ -22,9 +22,9 @@ class Transaccion extends Model
         'nombre_transaccion',
         'descripcion_transaccion',
         'valor_transaccion',
-        'categoria',
-        'entidad_financiera',
-        'proyeccion_financiera',
+        'Categorias_id_categoria',
+        'EntidadesFinancieras_id_entidad_financiera',
+        'ProyeccionesFinancieras_id_proyeccion_financiera',
     ];
 
     protected $casts = [
@@ -32,4 +32,20 @@ class Transaccion extends Model
         'fecha_actualizacion' => 'datetime',
         'fecha_eliminacion' => 'datetime',
     ];
+
+    // 🔹 Relaciones
+    public function categoria()
+    {
+        return $this->belongsTo(CategoriaTransaccion::class, 'Categorias_id_categoria_transaccion', 'id_categoria_transaccion');
+    }
+
+    public function entidadFinanciera()
+    {
+        return $this->belongsTo(EntidadFinanciera::class, 'EntidadesFinancieras_id_entidad_financiera', 'id_entidad_financiera');
+    }
+
+    public function proyeccionFinanciera()
+    {
+        return $this->belongsTo(ProyeccionFinanciera::class, 'ProyeccionesFinancieras_id_proyeccion_financiera', 'id_proyeccion_financiera');
+    }
 }
