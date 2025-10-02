@@ -20,8 +20,7 @@ class UsuarioController extends Controller
             return redirect()->route('login');
         }
 
-        $usuarios = Usuario::all();
-        return view('dashboard', compact('usuarios'));
+        return view('dashboard');
     }
 
     /**
@@ -36,7 +35,7 @@ class UsuarioController extends Controller
                 return response()->json($usuarios);
             }
 
-            return view('dashboard', compact('usuarios'));
+            return view('usuarios.index', compact('usuarios'));
         } catch (\Exception $e) {
             Log::error('Error en index: ' . $e->getMessage());
 
@@ -83,7 +82,7 @@ class UsuarioController extends Controller
                 ], 201);
             }
 
-            return redirect()->route('dashboard')->with('success', 'Usuario creado correctamente');
+            return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente');
         } catch (\Illuminate\Validation\ValidationException $e) {
             if ($request->wantsJson()) {
                 return response()->json(['errors' => $e->errors()], 422);
@@ -167,7 +166,7 @@ class UsuarioController extends Controller
                 ]);
             }
 
-            return redirect()->route('dashboard')->with('success', 'Usuario actualizado correctamente');
+            return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             if ($request->wantsJson()) {
                 return response()->json(['error' => 'Usuario no encontrado'], 404);
@@ -201,7 +200,7 @@ class UsuarioController extends Controller
                 return response()->json(['message' => 'Usuario eliminado exitosamente']);
             }
 
-            return redirect()->route('dashboard')->with('error', 'Usuario eliminado correctamente');
+            return redirect()->route('usuarios.index')->with('error', 'Usuario eliminado correctamente');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             if ($request->wantsJson()) {
                 return response()->json(['error' => 'Usuario no encontrado'], 404);
