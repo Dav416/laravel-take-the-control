@@ -12,6 +12,7 @@
 
     <div class="mb-3">
         <a href="{{ route('transacciones.create') }}" class="btn btn-primary">➕ Nueva Transacción</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">↩ Volver</a>
     </div>
 
     @if(session('success'))
