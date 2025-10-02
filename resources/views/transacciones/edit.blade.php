@@ -38,21 +38,21 @@
         </div>
 
         <div class="mb-3">
-            <label for="categorias" class="form-label">Categoría</label>
-            <input type="text" name="categorias" id="categorias"
-                   class="form-control" value="{{ old('categorias', $transaccion->categorias) }}" required>
+            <label for="categoria" class="form-label">Categoría</label>
+            <input type="text" name="categoria" id="categoria"
+                   class="form-control" value="{{ old('categoria', $transaccion->categoria) }}" required>
         </div>
 
         <div class="mb-3">
-            <label for="entidades_financieras" class="form-label">Entidad Financiera</label>
-            <input type="text" name="entidades_financieras" id="entidades_financieras"
-                   class="form-control" value="{{ old('entidades_financieras', $transaccion->entidades_financieras) }}" required>
+            <label for="entidad_financiera" class="form-label">Entidad Financiera</label>
+            <input type="text" name="entidad_financiera" id="entidad_financiera"
+                   class="form-control" value="{{ old('entidad_financiera', $transaccion->entidad_financiera) }}" required>
         </div>
 
         <div class="mb-3">
-            <label for="proyecciones_financieras" class="form-label">Proyección Financiera</label>
-            <input type="text" name="proyecciones_financieras" id="proyecciones_financieras"
-                   class="form-control" value="{{ old('proyecciones_financieras', $transaccion->proyecciones_financieras) }}" required>
+            <label for="proyeccion_financiera" class="form-label">Proyección Financiera</label>
+            <input type="text" name="proyeccion_financiera" id="proyeccion_financiera"
+                   class="form-control" value="{{ old('proyeccion_financiera', $transaccion->proyeccion_financiera) }}" required>
         </div>
 
         <button type="submit" class="btn btn-success">Actualizar</button>
