@@ -1,75 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard - Usuarios</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@extends('layouts.app')
 
-<div class="container mt-5">
-    <h1>Bienvenido 🎉 <span class="text-success">{{ Auth::user()->nombre_usuario ?? 'Usuario' }}</span></h1>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary">Listado de Usuarios</h2>
-        <a href="{{ route('usuarios.create') }}" class="btn btn-success">+ Crear Usuario</a>
+@section('content')
+<div class="container mx-auto px-6 py-10">
+    <!-- Saludo -->
+    <div class="mb-10 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+            ¡Bienvenido, {{ Auth::user()->name }}! 🎉
+        </h1>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">
+            Este es tu panel principal. Selecciona una opción para comenzar.
+        </p>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <!-- Accesos rápidos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <!-- Usuarios -->
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 hover:scale-105 transition-transform">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                👤 Gestión de Usuarios
+            </h2>
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
+                Administra los usuarios registrados en el sistema.
+            </p>
+            <a href="{{ route('usuarios.index') }}">
+            <button class="btn btn-primary btn-lg" type="button">
+                    Ir a Usuarios
+                </button>
+            </a>
+        </div>
 
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-
-    <div class="card shadow">
-        <div class="card-body">
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Cuenta</th>
-                        <th>Correo</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @forelse($usuarios as $usuario)
-                    <tr>
-                        <td>{{ $usuario->id_usuario }}</td>
-                        <td>{{ $usuario->nombre_usuario }}</td>
-                        <td>{{ $usuario->nombre_cuenta_usuario }}</td>
-                        <td>{{ $usuario->correo_usuario }}</td>
-                        <td>
-                            <a href="{{ route('usuarios.edit', $usuario->id_usuario) }}" class="btn btn-warning btn-sm">Editar</a>
-
-                            <form action="{{ route('usuarios.destroy', $usuario->id_usuario) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">
-                                    Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">No hay usuarios registrados</td>
-                    </tr>
-                @endforelse
-                </tbody>
-            </table>
+        <!-- Transacciones -->
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 hover:scale-105 transition-transform">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                💰 Transacciones
+            </h2>
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
+                Revisa y gestiona las transacciones registradas.
+            </p>
+            <a href="{{ route('transacciones.index') }}">
+            <button class="btn btn-primary btn-lg" type="button">
+                    Ir a Transacciones
+                </button>
+            </a>
         </div>
     </div>
-
-    <form action="{{ route('logout') }}" method="POST" class="mt-3">
-        @csrf
-        <button type="submit" class="btn btn-secondary">Cerrar sesión</button>
-    </form>
 </div>
-
-</body>
-</html>
+@endsection
