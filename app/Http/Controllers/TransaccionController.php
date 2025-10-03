@@ -3,33 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaccion;
+use App\Models\CategoriaTransaccion;
+use App\Models\EntidadFinanciera;
+use App\Models\ProyeccionFinanciera;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class TransaccionController extends Controller
 {
-
     /**
      * Listar transacciones
      */
     public function index(Request $request)
     {
         try {
-            $transacciones = Transaccion::paginate(10);
+            $transacciones = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
+                ->orderBy('fecha_creacion', 'desc')
+                ->paginate(15);
 
             if ($request->wantsJson()) {
                 return response()->json($transacciones);
             }
 
-           return view('transacciones.index', compact('transacciones'));
+            return view('transacciones.index', compact('transacciones'));
         } catch (\Exception $e) {
             Log::error('Error en index transacciones: ' . $e->getMessage());
-
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Error interno del servidor'], 500);
-            }
-
             return back()->withErrors(['error' => 'Error cargando transacciones']);
         }
     }
@@ -43,7 +42,11 @@ class TransaccionController extends Controller
             return redirect()->route('login');
         }
 
-        return view('transacciones.create');
+        $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
+        $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
+        $proyecciones = ProyeccionFinanciera::orderBy('nombre_proyeccion_financiera')->get();
+
+        return view('transacciones.create', compact('categorias', 'entidades', 'proyecciones'));
     }
 
     /**
@@ -55,63 +58,31 @@ class TransaccionController extends Controller
             $validated = $request->validate([
                 'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
-                'valor_transaccion' => 'required|numeric',
-                'categoria' => 'nullable|string|max:255',
-                'entidad_financiera' => 'nullable|string|max:255',
-                'proyeccion_financiera' => 'nullable|string|max:255',
+                'valor_transaccion' => 'required|numeric|min:0',
+                'categoria_id' => 'required|exists:categorias_transacciones,id_categoria_transaccion',
+                'entidad_financiera_id' => 'required|exists:entidades_financieras,id_entidad_financiera',
+                'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
             ]);
 
-            $transaccion = Transaccion::create($validated);
+            Transaccion::create($validated);
 
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'message' => 'Transacción creada exitosamente',
-                    'transaccion' => $transaccion,
-                ], 201);
-            }
-
-            return redirect()->route('transacciones.index')->with('success', 'Transacción creada correctamente');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['errors' => $e->errors()], 422);
-            }
-            return back()->withErrors($e->errors())->withInput();
+            return redirect()->route('transacciones.index')
+                ->with('success', 'Transacción creada correctamente');
         } catch (\Exception $e) {
             Log::error('Error creando transacción: ' . $e->getMessage());
-
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Error interno del servidor'], 500);
-            }
-            return back()->withErrors(['error' => 'Error creando transacción']);
+            return back()->withErrors(['error' => 'Error creando transacción'])->withInput();
         }
     }
 
     /**
      * Mostrar una transacción específica
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        try {
-            $transaccion = Transaccion::findOrFail($id);
+        $transaccion = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
+            ->findOrFail($id);
 
-            if ($request->wantsJson()) {
-                return response()->json($transaccion);
-            }
-
-            return view('transacciones.show', compact('transaccion'));
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Transacción no encontrada'], 404);
-            }
-            return back()->withErrors(['error' => 'Transacción no encontrada']);
-        } catch (\Exception $e) {
-            Log::error('Error mostrando transacción: ' . $e->getMessage());
-
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Error interno del servidor'], 500);
-            }
-            return back()->withErrors(['error' => 'Error mostrando transacción']);
-        }
+        return view('transacciones.show', compact('transaccion'));
     }
 
     /**
@@ -124,7 +95,11 @@ class TransaccionController extends Controller
         }
 
         $transaccion = Transaccion::findOrFail($id);
-        return view('transacciones.edit', compact('transaccion'));
+        $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
+        $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
+        $proyecciones = ProyeccionFinanciera::orderBy('nombre_proyeccion_financiera')->get();
+
+        return view('transacciones.edit', compact('transaccion', 'categorias', 'entidades', 'proyecciones'));
     }
 
     /**
@@ -136,69 +111,37 @@ class TransaccionController extends Controller
             $transaccion = Transaccion::findOrFail($id);
 
             $validated = $request->validate([
-                'nombre_transaccion' => 'sometimes|string|max:255',
+                'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
-                'valor_transaccion' => 'sometimes|numeric',
-                'categoria' => 'nullable|string|max:255',
-                'entidad_financiera' => 'nullable|string|max:255',
-                'proyeccion_financiera' => 'nullable|string|max:255',
+                'valor_transaccion' => 'required|numeric|min:0',
+                'categoria_id' => 'required|exists:categorias_transacciones,id_categoria_transaccion',
+                'entidad_financiera_id' => 'required|exists:entidades_financieras,id_entidad_financiera',
+                'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
             ]);
 
             $transaccion->update($validated);
 
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'message' => 'Transacción actualizada exitosamente',
-                    'transaccion' => $transaccion->fresh(),
-                ]);
-            }
-
-            return redirect()->route('transacciones.index')->with('success', 'Transacción actualizada correctamente');
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Transacción no encontrada'], 404);
-            }
-            return back()->withErrors(['error' => 'Transacción no encontrada']);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['errors' => $e->errors()], 422);
-            }
-            return back()->withErrors($e->errors())->withInput();
+            return redirect()->route('transacciones.index')
+                ->with('success', 'Transacción actualizada correctamente');
         } catch (\Exception $e) {
             Log::error('Error actualizando transacción: ' . $e->getMessage());
-
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Error interno del servidor'], 500);
-            }
-            return back()->withErrors(['error' => 'Error actualizando transacción']);
+            return back()->withErrors(['error' => 'Error actualizando transacción'])->withInput();
         }
     }
 
     /**
-     * Eliminar transacción (soft delete)
+     * Eliminar transacción
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         try {
             $transaccion = Transaccion::findOrFail($id);
             $transaccion->delete();
 
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Transacción eliminada exitosamente']);
-            }
-
-            return redirect()->route('transacciones.index')->with('error', 'Transacción eliminada correctamente');
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Transacción no encontrada'], 404);
-            }
-            return back()->withErrors(['error' => 'Transacción no encontrada']);
+            return redirect()->route('transacciones.index')
+                ->with('success', 'Transacción eliminada correctamente');
         } catch (\Exception $e) {
             Log::error('Error eliminando transacción: ' . $e->getMessage());
-
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Error interno del servidor'], 500);
-            }
             return back()->withErrors(['error' => 'Error eliminando transacción']);
         }
     }

@@ -11,9 +11,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Llamamos al seeder de usuarios
+        // IMPORTANTE: Respetar el orden debido a las FK
         $this->call([
+            // 1. Tablas sin dependencias
+            CategoriaProyeccionSeeder::class,
+            CategoriaTransaccionSeeder::class,
+            EntidadFinancieraSeeder::class,
             UsuariosSeeder::class,
+
+            // 2. Tablas con dependencias
+            ProyeccionFinancieraSeeder::class, // Depende de Usuario y CategoriaProyeccion
+
+            // 3. Transacciones (depende de todo)
+            TransaccionSeeder::class,
         ]);
+
+        $this->command->info('✅ Seeders ejecutados correctamente');
     }
 }

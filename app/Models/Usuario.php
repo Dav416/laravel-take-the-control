@@ -14,7 +14,7 @@ class Usuario extends Authenticatable
     use HasApiTokens, HasFactory,Notifiable, SoftDeletes;
 
     // Nombre real de la tabla
-    protected $table = 'Usuarios';
+    protected $table = 'usuarios';
 
     // Clave primaria personalizada
     protected $primaryKey = 'id_usuario';
@@ -84,5 +84,25 @@ class Usuario extends Authenticatable
     public function checkPassword($password)
     {
         return Hash::check($password, $this->clave_usuario);
+    }
+
+    // 🔹 Relación con Proyecciones Financieras
+    public function proyeccionesFinancieras()
+    {
+        return $this->hasMany(ProyeccionFinanciera::class, 'Usuarios_id_usuario', 'id_usuario');
+    }
+
+        // Cascade con SoftDeletes
+    protected static function booted()
+    {
+        static::deleting(function ($usuario) {
+            if ($usuario->isForceDeleting()) {
+                // Si es borrado permanente => elimina en físico
+                $usuario->proyeccionesFinancieras()->forceDelete();
+            } else {
+                // Si es soft delete => marca también las proyecciones como eliminadas
+                $usuario->proyeccionesFinancieras()->delete();
+            }
+        });
     }
 }

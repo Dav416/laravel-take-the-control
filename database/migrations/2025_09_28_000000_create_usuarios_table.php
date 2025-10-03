@@ -7,7 +7,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('Usuarios', function (Blueprint $table) {
+        Schema::create('usuarios', function (Blueprint $table) {
             $table->bigIncrements('id_usuario'); // PK autoincrement
             $table->string('nombre_usuario', 255);
             $table->string('nombre_cuenta_usuario', 255)->unique();
@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('Usuarios');
+        Schema::dropIfExists('usuarios');
     }
 };
