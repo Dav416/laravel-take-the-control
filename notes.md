@@ -1,0 +1,17 @@
+# Periodos
+Anexar la tabla de Periodos
+
+## Descripción
+1. Generar una relación entre transacciones(movimientos), donde un periodo pueda tener varios movimientos
+2. (relación una a muchos)
+3. Verificar la opción de ciclar los periodos, para que sean automaticos y vuelvan a generarse al finalizar el actual
+4. Permitir al usuario crear sus propios periodos
+
+# Transacciones(movimientos)
+1. En el dashboard agrupar los registros por fechas
+2. Al agrupar los registros por fecha (periodos) hacer las operaciones aritmeticas correspondientes (suma, resta)
+
+# Tipos
+Falta agregar la entidad tipos la cual estaba relacionada con proyecciones financieras pero en realidad debe estar relacionada con transacciones(movimientos)
+## Descripción
+Identificar el tipo de transacción(movimiento), ejemplo: ingreso, egreso, etc.
