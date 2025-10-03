@@ -18,8 +18,9 @@ class TransaccionController extends Controller
     public function index(Request $request)
     {
         try {
-            $transacciones = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccion'])
-                ->paginate(10);
+            $transacciones = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
+                ->orderBy('fecha_creacion', 'desc')
+                ->paginate(15);
 
             if ($request->wantsJson()) {
                 return response()->json($transacciones);
@@ -41,9 +42,9 @@ class TransaccionController extends Controller
             return redirect()->route('login');
         }
 
-        $categorias = CategoriaTransaccion::all();
-        $entidades = EntidadFinanciera::all();
-        $proyecciones = ProyeccionFinanciera::all();
+        $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
+        $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
+        $proyecciones = ProyeccionFinanciera::orderBy('nombre_proyeccion_financiera')->get();
 
         return view('transacciones.create', compact('categorias', 'entidades', 'proyecciones'));
     }
@@ -57,13 +58,13 @@ class TransaccionController extends Controller
             $validated = $request->validate([
                 'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
-                'valor_transaccion' => 'required|numeric',
-                'categoria_id' => 'required|exists:categoria_id,id_categoria_transaccion',
-                'entidad_financiera_id' => 'required|exists:entidad_financiera_id,id_entidad_financiera',
-                'proyeccion_financiera_id' => 'required|exists:proyeccion_financiera_id,id_proyeccion_financiera',
+                'valor_transaccion' => 'required|numeric|min:0',
+                'categoria_id' => 'required|exists:categorias_transacciones,id_categoria_transaccion',
+                'entidad_financiera_id' => 'required|exists:entidades_financieras,id_entidad_financiera',
+                'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
             ]);
 
-            $transaccion = Transaccion::create($validated);
+            Transaccion::create($validated);
 
             return redirect()->route('transacciones.index')
                 ->with('success', 'Transacción creada correctamente');
@@ -78,7 +79,7 @@ class TransaccionController extends Controller
      */
     public function show($id)
     {
-        $transaccion = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccion'])
+        $transaccion = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
             ->findOrFail($id);
 
         return view('transacciones.show', compact('transaccion'));
@@ -94,9 +95,9 @@ class TransaccionController extends Controller
         }
 
         $transaccion = Transaccion::findOrFail($id);
-        $categorias = CategoriaTransaccion::all();
-        $entidades = EntidadFinanciera::all();
-        $proyecciones = ProyeccionFinanciera::all();
+        $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
+        $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
+        $proyecciones = ProyeccionFinanciera::orderBy('nombre_proyeccion_financiera')->get();
 
         return view('transacciones.edit', compact('transaccion', 'categorias', 'entidades', 'proyecciones'));
     }
@@ -110,12 +111,12 @@ class TransaccionController extends Controller
             $transaccion = Transaccion::findOrFail($id);
 
             $validated = $request->validate([
-                'nombre_transaccion' => 'sometimes|string|max:255',
+                'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
-                'valor_transaccion' => 'sometimes|numeric',
-                'categoria_id' => 'required|exists:categoria_id,id_categoria_transaccion',
-                'entidad_financiera_id' => 'required|exists:entidad_financiera_id,id_entidad_financiera',
-                'proyeccion_financiera_id' => 'required|exists:proyeccion_financiera_id,id_proyeccion_financiera',
+                'valor_transaccion' => 'required|numeric|min:0',
+                'categoria_id' => 'required|exists:categorias_transacciones,id_categoria_transaccion',
+                'entidad_financiera_id' => 'required|exists:entidades_financieras,id_entidad_financiera',
+                'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
             ]);
 
             $transaccion->update($validated);
@@ -138,7 +139,7 @@ class TransaccionController extends Controller
             $transaccion->delete();
 
             return redirect()->route('transacciones.index')
-                ->with('error', 'Transacción eliminada correctamente');
+                ->with('success', 'Transacción eliminada correctamente');
         } catch (\Exception $e) {
             Log::error('Error eliminando transacción: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Error eliminando transacción']);
