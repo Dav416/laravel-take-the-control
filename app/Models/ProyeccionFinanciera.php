@@ -22,7 +22,7 @@ class ProyeccionFinanciera extends Model
         'nombre_proyeccion_financiera',
         'descripcion_proyeccion_financiera',
         'meta_proyeccion_financiera',
-        'Categorias_id_categoria',
+        'categoria_id',
     ];
 
     protected $casts = [
@@ -41,6 +41,6 @@ class ProyeccionFinanciera extends Model
     // Relación con CategoriasProyecciones (tabla extra que mencionas en la FK)
     public function categoriaProyeccion()
     {
-        return $this->belongsTo(CategoriaProyeccion::class, 'Categorias_id_categoria', 'id_categoria_proyeccion');
+         return $this->belongsTo(CategoriaProyeccion::class, 'categoria_id', 'id_categoria_proyeccion');
     }
 }

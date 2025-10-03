@@ -32,6 +32,6 @@ class CategoriaTransaccion extends Model
     // Relación con Transacciones
     public function transacciones()
     {
-        return $this->hasMany(Transaccion::class, 'Categorias_id_categoria_transaccion', 'id_categoria_transaccion');
+        return $this->hasMany(Transaccion::class, 'categoria_id', 'id_categoria_transaccion');
     }
 }

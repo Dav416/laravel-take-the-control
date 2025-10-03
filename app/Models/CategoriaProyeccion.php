@@ -32,6 +32,6 @@ class CategoriaProyeccion extends Model
     // Relación con Proyecciones Financieras
     public function proyecciones()
     {
-        return $this->hasMany(ProyeccionFinanciera::class, 'Categorias_id_categoria', 'id_categoria_proyeccion');
+        return $this->hasMany(ProyeccionFinanciera::class, 'categoria_id', 'id_categoria_proyeccion');
     }
 }

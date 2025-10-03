@@ -32,6 +32,6 @@ class EntidadFinanciera extends Model
     // Relación con Transacciones
     public function transacciones()
     {
-        return $this->hasMany(Transaccion::class, 'EntidadesFinancieras_id_entidad_financiera', 'id_entidad_financiera');
+        return $this->hasMany(Transaccion::class, 'entidad_financiera_id', 'id_entidad_financiera');
     }
 }

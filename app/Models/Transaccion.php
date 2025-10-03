@@ -22,9 +22,9 @@ class Transaccion extends Model
         'nombre_transaccion',
         'descripcion_transaccion',
         'valor_transaccion',
-        'Categorias_id_categoria',
-        'EntidadesFinancieras_id_entidad_financiera',
-        'ProyeccionesFinancieras_id_proyeccion_financiera',
+        'categoria_id',
+        'entidad_financiera_id',
+        'proyeccion_financiera_id',
     ];
 
     protected $casts = [
@@ -36,16 +36,16 @@ class Transaccion extends Model
     // 🔹 Relaciones
     public function categoria()
     {
-        return $this->belongsTo(CategoriaTransaccion::class, 'Categorias_id_categoria_transaccion', 'id_categoria_transaccion');
+    return $this->belongsTo(CategoriaTransaccion::class, 'categoria_id', 'id_categoria_transaccion');
     }
 
     public function entidadFinanciera()
     {
-        return $this->belongsTo(EntidadFinanciera::class, 'EntidadesFinancieras_id_entidad_financiera', 'id_entidad_financiera');
+        return $this->belongsTo(EntidadFinanciera::class, 'entidad_financiera_id', 'id_entidad_financiera');
     }
 
     public function proyeccionFinanciera()
     {
-        return $this->belongsTo(ProyeccionFinanciera::class, 'ProyeccionesFinancieras_id_proyeccion_financiera', 'id_proyeccion_financiera');
+        return $this->belongsTo(ProyeccionFinanciera::class, 'proyeccion_financiera_id', 'id_proyeccion_financiera');
     }
 }
