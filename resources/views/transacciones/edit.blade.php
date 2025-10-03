@@ -1,62 +1,154 @@
 @extends('layouts.app')
 
+@section('title', 'Editar Transacción')
+
 @section('content')
-<div class="container mt-4">
-    <h2>Editar Transacción</h2>
-
-    {{-- Mostrar errores de validación --}}
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('transacciones.update', $transaccion->id_transaccion) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-3">
-            <label for="nombre_transaccion" class="form-label">Nombre de la Transacción</label>
-            <input type="text" name="nombre_transaccion" id="nombre_transaccion"
-                   class="form-control" value="{{ old('nombre_transaccion', $transaccion->nombre_transaccion) }}" required>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Editar Transacción</h1>
+            <a href="{{ route('transacciones.index') }}" class="btn btn-secondary">
+                ← Volver
+            </a>
         </div>
 
-        <div class="mb-3">
-            <label for="descripcion_transaccion" class="form-label">Descripción</label>
-            <textarea name="descripcion_transaccion" id="descripcion_transaccion"
-                      class="form-control">{{ old('descripcion_transaccion', $transaccion->descripcion_transaccion) }}</textarea>
-        </div>
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show">
+                <strong>Error:</strong>
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
 
-        <div class="mb-3">
-            <label for="valor_transaccion" class="form-label">Valor</label>
-            <input type="number" name="valor_transaccion" id="valor_transaccion"
-                   class="form-control" value="{{ old('valor_transaccion', $transaccion->valor_transaccion) }}" required>
-        </div>
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('transacciones.update', $transaccion->id_transaccion) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-        <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría</label>
-            <input type="text" name="categoria" id="categoria"
-                   class="form-control" value="{{ old('categoria', $transaccion->categoria) }}" required>
-        </div>
+                    <div class="mb-3">
+                        <label for="nombre_transaccion" class="form-label">
+                            Nombre de la Transacción <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                               class="form-control @error('nombre_transaccion') is-invalid @enderror"
+                               id="nombre_transaccion"
+                               name="nombre_transaccion"
+                               value="{{ old('nombre_transaccion', $transaccion->nombre_transaccion) }}"
+                               required>
+                        @error('nombre_transaccion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-        <div class="mb-3">
-            <label for="entidad_financiera" class="form-label">Entidad Financiera</label>
-            <input type="text" name="entidad_financiera" id="entidad_financiera"
-                   class="form-control" value="{{ old('entidad_financiera', $transaccion->entidad_financiera) }}" required>
-        </div>
+                    <div class="mb-3">
+                        <label for="descripcion_transaccion" class="form-label">Descripción</label>
+                        <textarea class="form-control @error('descripcion_transaccion') is-invalid @enderror"
+                                  id="descripcion_transaccion"
+                                  name="descripcion_transaccion"
+                                  rows="3">{{ old('descripcion_transaccion', $transaccion->descripcion_transaccion) }}</textarea>
+                        @error('descripcion_transaccion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-        <div class="mb-3">
-            <label for="proyeccion_financiera" class="form-label">Proyección Financiera</label>
-            <input type="text" name="proyeccion_financiera" id="proyeccion_financiera"
-                   class="form-control" value="{{ old('proyeccion_financiera', $transaccion->proyeccion_financiera) }}" required>
-        </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="valor_transaccion" class="form-label">
+                                Valor (COP) <span class="text-danger">*</span>
+                            </label>
+                            <input type="number"
+                                   class="form-control @error('valor_transaccion') is-invalid @enderror"
+                                   id="valor_transaccion"
+                                   name="valor_transaccion"
+                                   value="{{ old('valor_transaccion', $transaccion->valor_transaccion) }}"
+                                   step="0.01"
+                                   required>
+                            @error('valor_transaccion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-        <button type="submit" class="btn btn-success">Actualizar</button>
-        <a href="{{ route('transacciones.index') }}" class="btn btn-secondary">Cancelar</a>
-    </form>
+                        <div class="col-md-6 mb-3">
+                            <label for="categoria_id" class="form-label">
+                                Categoría <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select @error('categoria_id') is-invalid @enderror"
+                                    id="categoria_id"
+                                    name="categoria_id"
+                                    required>
+                                <option value="">Seleccione una categoría</option>
+                                @foreach($categorias as $categoria)
+                                    <option value="{{ $categoria->id_categoria_transaccion }}"
+                                            {{ old('categoria_id', $transaccion->categoria_id) == $categoria->id_categoria_transaccion ? 'selected' : '' }}>
+                                        {{ $categoria->nombre_categoria_transaccion }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('categoria_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="entidad_financiera_id" class="form-label">
+                                Entidad Financiera <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select @error('entidad_financiera_id') is-invalid @enderror"
+                                    id="entidad_financiera_id"
+                                    name="entidad_financiera_id"
+                                    required>
+                                <option value="">Seleccione una entidad</option>
+                                @foreach($entidades as $entidad)
+                                    <option value="{{ $entidad->id_entidad_financiera }}"
+                                            {{ old('entidad_financiera_id', $transaccion->entidad_financiera_id) == $entidad->id_entidad_financiera ? 'selected' : '' }}>
+                                        {{ $entidad->nombre_entidad_financiera }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('entidad_financiera_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="proyeccion_financiera_id" class="form-label">
+                                Proyección Financiera (Opcional)
+                            </label>
+                            <select class="form-select @error('proyeccion_financiera_id') is-invalid @enderror"
+                                    id="proyeccion_financiera_id"
+                                    name="proyeccion_financiera_id">
+                                <option value="">Sin proyección</option>
+                                @foreach($proyecciones as $proyeccion)
+                                    <option value="{{ $proyeccion->id_proyeccion_financiera }}"
+                                            {{ old('proyeccion_financiera_id', $transaccion->proyeccion_financiera_id) == $proyeccion->id_proyeccion_financiera ? 'selected' : '' }}>
+                                        {{ $proyeccion->nombre_proyeccion_financiera }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('proyeccion_financiera_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ route('transacciones.index') }}" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            Actualizar Transacción
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
