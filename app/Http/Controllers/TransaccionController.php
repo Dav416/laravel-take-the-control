@@ -58,9 +58,9 @@ class TransaccionController extends Controller
                 'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
                 'valor_transaccion' => 'required|numeric',
-                'categoria_id' => 'required|exists:CategoriasTransacciones,id_categoria_transaccion',
-                'entidad_financiera_id' => 'required|exists:EntidadesFinancieras,id_entidad_financiera',
-                'proyeccion_financiera_id' => 'required|exists:ProyeccionesFinancieras,id_proyeccion_financiera',
+                'categoria_id' => 'required|exists:categoria_id,id_categoria_transaccion',
+                'entidad_financiera_id' => 'required|exists:entidad_financiera_id,id_entidad_financiera',
+                'proyeccion_financiera_id' => 'required|exists:proyeccion_financiera_id,id_proyeccion_financiera',
             ]);
 
             $transaccion = Transaccion::create($validated);
@@ -113,9 +113,9 @@ class TransaccionController extends Controller
                 'nombre_transaccion' => 'sometimes|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
                 'valor_transaccion' => 'sometimes|numeric',
-                'categoria_id' => 'required|exists:CategoriasTransacciones,id_categoria_transaccion',
-                'entidad_financiera_id' => 'required|exists:EntidadesFinancieras,id_entidad_financiera',
-                'proyeccion_financiera_id' => 'required|exists:ProyeccionesFinancieras,id_proyeccion_financiera',
+                'categoria_id' => 'required|exists:categoria_id,id_categoria_transaccion',
+                'entidad_financiera_id' => 'required|exists:entidad_financiera_id,id_entidad_financiera',
+                'proyeccion_financiera_id' => 'required|exists:proyeccion_financiera_id,id_proyeccion_financiera',
             ]);
 
             $transaccion->update($validated);

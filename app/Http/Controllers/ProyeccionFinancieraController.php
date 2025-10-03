@@ -32,7 +32,7 @@ class ProyeccionFinancieraController extends Controller
                 'nombre_proyeccion_financiera'   => 'required|string|max:255',
                 'descripcion_proyeccion_financiera' => 'nullable|string',
                 'meta_proyeccion_financiera'    => 'required|numeric',
-                'categoria_id'       => 'nullable|exists:CategoriasProyecciones,id_categoria_proyeccion',
+                'categoria_id'       => 'nullable|exists:categoria_id,id_categoria_proyeccion',
             ]);
 
             // Asignar al usuario autenticado
@@ -68,7 +68,7 @@ class ProyeccionFinancieraController extends Controller
                 'nombre_proyeccion_financiera'   => 'sometimes|string|max:255',
                 'descripcion_proyeccion_financiera' => 'nullable|string',
                 'meta_proyeccion_financiera'    => 'sometimes|numeric',
-                'categoria_id'       => 'nullable|exists:CategoriasProyecciones,id_categoria_proyeccion',
+                'categoria_id'       => 'nullable|exists:categoria_id,id_categoria_proyeccion',
             ]);
 
             $proyeccion->update($validated);
