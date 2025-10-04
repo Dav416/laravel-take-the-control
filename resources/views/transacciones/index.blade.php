@@ -87,4 +87,10 @@
 <div class="mt-3">
     {{ $transacciones->links('pagination::bootstrap-5') }}
 </div>
+
+    <form action="{{ route('logout') }}" method="POST" class="mt-3">
+        @csrf
+        <button type="submit" class="btn btn-secondary">Cerrar sesión</button>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">↩ Volver</a>
+    </form>
 @endsection
