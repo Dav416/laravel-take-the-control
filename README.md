@@ -3,7 +3,7 @@ Este proyecto es un **prototipo** desarrollado en **Laravel** para la gestión d
 
 Contiene:  
 - Inicio de sesión
-- Autenticación de usuarios.
+- Autenticación de usuarios a través de LaravelSanctum.
 - CRUD de usuarios.  
 - CRUD de transacciones.
 - Vistas de usuarios.
