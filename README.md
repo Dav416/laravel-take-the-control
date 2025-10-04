@@ -1,10 +1,16 @@
 # Take The Control - Gestor de Finanzas Personales  
 
-Este proyecto es un **prototipo** desarrollado en **Laravel** para la gestión y autenticación de usuarios.  
+Este proyecto es un **prototipo** desarrollado en **Laravel** para la gestión de finanzas personales.  
 
 Contiene:  
+- Inicio de sesión
+- Autenticación de usuarios.
 - CRUD de usuarios.  
-- Inicio de sesión y autenticación.  
+- CRUD de transacciones.
+- Vistas de usuarios.
+- Vistas de transacciones.
+- Modelo MVC.
+- Migraciones y seeders.
 - APIS accesibles mediante **Postman** o **Insomnia**.  
 - Pruebas unitarias con **PHPUnit**.  
 
@@ -72,7 +78,7 @@ Contiene:
 
 8. **Iniciar sesión**
 ## Notas 
-- La base de datos viene alimentada con 2 usuarios fijos y 10 usuarios creados aleatoriamente.
+- La base de datos viene alimentada con 2 usuarios por defecto y 10 usuarios creados aleatoriamente.
 - La contraseña para los 12 usuarios existentes es por defecto `password123`.
 
 ## Credenciales disponibles
