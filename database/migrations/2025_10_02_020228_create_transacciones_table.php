@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('valor_transaccion', 11, 0);
 
             // Columnas FK
+            $table->unsignedBigInteger('tipo_id')->nullable();
             $table->unsignedBigInteger('categoria_id')->nullable();
             $table->unsignedBigInteger('entidad_financiera_id')->nullable();
             $table->unsignedBigInteger('proyeccion_financiera_id')->nullable();
@@ -29,6 +30,11 @@ return new class extends Migration
         });
 
         Schema::table('transacciones', function (Blueprint $table) {
+            $table->foreign('tipo_id', 'fk_transacciones_tipo')
+                ->references('id_tipo')
+                ->on('tipos')
+                ->cascadeOnDelete();
+
             $table->foreign('categoria_id', 'fk_transacciones_categoria')
                   ->references('id_categoria_transaccion')
                   ->on('categorias_transacciones')
