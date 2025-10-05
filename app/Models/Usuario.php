@@ -45,6 +45,14 @@ class Usuario extends Authenticatable
         'fecha_eliminacion' => 'datetime',
     ];
 
+    /**
+     * Obtener la clave de ruta para el model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'id_usuario';
+    }
+
     // Para que Laravel use 'correo_usuario' como identificador
     public function getAuthIdentifierName()
     {
@@ -86,23 +94,21 @@ class Usuario extends Authenticatable
         return Hash::check($password, $this->clave_usuario);
     }
 
-    // 🔹 Relación con Proyecciones Financieras
-    public function proyeccionesFinancieras()
-    {
-        return $this->hasMany(ProyeccionFinanciera::class, 'Usuarios_id_usuario', 'id_usuario');
-    }
-
-        // Cascade con SoftDeletes
+    // Cascade con SoftDeletes
     protected static function booted()
     {
         static::deleting(function ($usuario) {
             if ($usuario->isForceDeleting()) {
-                // Si es borrado permanente => elimina en físico
                 $usuario->proyeccionesFinancieras()->forceDelete();
             } else {
-                // Si es soft delete => marca también las proyecciones como eliminadas
                 $usuario->proyeccionesFinancieras()->delete();
             }
         });
+    }
+
+    // 🔹 Relación con Proyecciones Financieras
+    public function proyeccionesFinancieras()
+    {
+        return $this->hasMany(ProyeccionFinanciera::class, 'usuario_id', 'id_usuario');
     }
 }

@@ -35,12 +35,17 @@ class ProyeccionFinanciera extends Model
     // Relación con Transacciones
     public function transacciones()
     {
-        return $this->hasMany(Transaccion::class, 'ProyeccionesFinancieras_id_proyeccion_financiera', 'id_proyeccion_financiera');
+        return $this->hasMany(Transaccion::class, 'proyeccion_financiera_id', 'id_proyeccion_financiera');
     }
 
     // Relación con CategoriasProyecciones (tabla extra que mencionas en la FK)
     public function categoriaProyeccion()
     {
          return $this->belongsTo(CategoriaProyeccion::class, 'categoria_id', 'id_categoria_proyeccion');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id_usuario');
     }
 }
