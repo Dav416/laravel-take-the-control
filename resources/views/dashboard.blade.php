@@ -22,10 +22,8 @@
             <p class="text-gray-600 dark:text-gray-300 mb-6">
                 Administra los usuarios registrados en el sistema.
             </p>
-            <a href="{{ route('usuarios.index') }}">
-            <button class="btn btn-primary btn-lg" type="button">
-                    Ir a Usuarios
-                </button>
+            <a href="{{ route('usuarios.index') }}" class="btn btn-primary btn-lg">
+                Ir a Usuarios
             </a>
         </div>
 
@@ -37,10 +35,9 @@
             <p class="text-gray-600 dark:text-gray-300 mb-6">
                 Revisa y gestiona las transacciones registradas.
             </p>
-            <a href="{{ route('transacciones.index') }}">
-            <button class="btn btn-primary btn-lg" type="button">
-                    Ir a Transacciones
-                </button>
+
+            <a href="{{ route('transacciones.index') }}" class="btn btn-primary btn-lg">
+                Ir a Transacciones
             </a>
         </div>
     </div>
