@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaccion;
+use App\Models\Tipo;
 use App\Models\CategoriaTransaccion;
 use App\Models\EntidadFinanciera;
 use App\Models\ProyeccionFinanciera;
@@ -18,8 +19,8 @@ class TransaccionController extends Controller
     public function index(Request $request)
     {
         try {
-            $transacciones = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
-                ->orderBy('fecha_creacion', 'desc')
+            $transacciones = Transaccion::with(['tipo', 'categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
+                ->orderBy('id_transaccion', 'desc')
                 ->paginate(15);
 
             if ($request->wantsJson()) {
@@ -42,11 +43,12 @@ class TransaccionController extends Controller
             return redirect()->route('login');
         }
 
+        $tipos = Tipo::orderBy('nombre_tipo')->get();
         $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
         $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
         $proyecciones = ProyeccionFinanciera::orderBy('nombre_proyeccion_financiera')->get();
 
-        return view('transacciones.create', compact('categorias', 'entidades', 'proyecciones'));
+        return view('transacciones.create', compact('tipos', 'categorias', 'entidades', 'proyecciones'));
     }
 
     /**
@@ -59,6 +61,7 @@ class TransaccionController extends Controller
                 'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
                 'valor_transaccion' => 'required|numeric|min:0',
+                'tipo_id' => 'required|exists:tipos,id_tipo',
                 'categoria_id' => 'required|exists:categorias_transacciones,id_categoria_transaccion',
                 'entidad_financiera_id' => 'required|exists:entidades_financieras,id_entidad_financiera',
                 'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
@@ -79,7 +82,7 @@ class TransaccionController extends Controller
      */
     public function show($id)
     {
-        $transaccion = Transaccion::with(['categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
+        $transaccion = Transaccion::with(['tipo', 'categoria', 'entidadFinanciera', 'proyeccionFinanciera'])
             ->findOrFail($id);
 
         return view('transacciones.show', compact('transaccion'));
@@ -95,11 +98,12 @@ class TransaccionController extends Controller
         }
 
         $transaccion = Transaccion::findOrFail($id);
+        $tipos = Tipo::orderBy('nombre_tipo')->get();
         $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
         $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
         $proyecciones = ProyeccionFinanciera::orderBy('nombre_proyeccion_financiera')->get();
 
-        return view('transacciones.edit', compact('transaccion', 'categorias', 'entidades', 'proyecciones'));
+        return view('transacciones.edit', compact('transaccion', 'tipos', 'categorias', 'entidades', 'proyecciones'));
     }
 
     /**
@@ -114,6 +118,7 @@ class TransaccionController extends Controller
                 'nombre_transaccion' => 'required|string|max:255',
                 'descripcion_transaccion' => 'nullable|string',
                 'valor_transaccion' => 'required|numeric|min:0',
+                'tipo_id' => 'required|exists:tipos,id_tipo',
                 'categoria_id' => 'required|exists:categorias_transacciones,id_categoria_transaccion',
                 'entidad_financiera_id' => 'required|exists:entidades_financieras,id_entidad_financiera',
                 'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
