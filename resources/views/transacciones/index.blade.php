@@ -36,6 +36,7 @@
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Valor</th>
+                        <th>Tipo</th>
                         <th>Categoría</th>
                         <th>Entidad</th>
                         <th>Proyección</th>
@@ -50,6 +51,7 @@
                             <td>{{ $transaccion->nombre_transaccion }}</td>
                             <td>{{ Str::limit($transaccion->descripcion_transaccion, 40) }}</td>
                             <td class="fw-bold">${{ number_format($transaccion->valor_transaccion, 0, ',', '.') }}</td>
+                            <td>{{ $transaccion->tipo->nombre_tipo ?? 'N/A' }}</td>
                             <td>{{ $transaccion->categoria->nombre_categoria_transaccion ?? 'N/A' }}</td>
                             <td>{{ $transaccion->entidadFinanciera->nombre_entidad_financiera ?? 'N/A' }}</td>
                             <td>{{ $transaccion->proyeccionFinanciera->nombre_proyeccion_financiera ?? '-' }}</td>

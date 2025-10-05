@@ -72,6 +72,28 @@
                             @enderror
                         </div>
 
+
+                        <div class="col-md-6 mb-3">
+                            <label for="tipo_id" class="form-label">
+                                Tipo <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select @error('tipo_id') is-invalid @enderror"
+                                    id="tipo_id"
+                                    name="tipo_id"
+                                    required>
+                                <option value="">Seleccione un tipo</option>
+                                @foreach($tipos as $tipo)
+                                    <option value="{{ $tipo->id_tipo }}"
+                                            {{ old('tipo_id') == $tipo->id_tipo ? 'selected' : '' }}>
+                                        {{ $tipo->nombre_tipo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('tipo_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="col-md-6 mb-3">
                             <label for="categoria_id" class="form-label">
                                 Categoría <span class="text-danger">*</span>
