@@ -22,6 +22,7 @@ class Transaccion extends Model
         'nombre_transaccion',
         'descripcion_transaccion',
         'valor_transaccion',
+        'tipo_id',
         'categoria_id',
         'entidad_financiera_id',
         'proyeccion_financiera_id',
@@ -32,6 +33,14 @@ class Transaccion extends Model
         'fecha_actualizacion' => 'datetime',
         'fecha_eliminacion' => 'datetime',
     ];
+
+    /**
+     * Obtener la clave de ruta para el model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'id_transaccion';
+    }
 
     // 🔹 Relaciones
     public function categoria()
@@ -47,5 +56,9 @@ class Transaccion extends Model
     public function proyeccionFinanciera()
     {
         return $this->belongsTo(ProyeccionFinanciera::class, 'proyeccion_financiera_id', 'id_proyeccion_financiera');
+    }
+    public function tipo()
+    {
+        return $this->belongsTo(Tipo::class, 'tipo_id', 'id_tipo');
     }
 }
