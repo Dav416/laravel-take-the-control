@@ -45,11 +45,13 @@
                         <td>
                             <a href="{{ route('usuarios.edit', $usuario->id_usuario) }}" class="btn btn-warning btn-sm">Editar</a>
 
-                            <form action="{{ route('usuarios.destroy', $usuario->id_usuario) }}" method="POST" class="d-inline">
+                            <form action="{{ route('usuarios.destroy', $usuario->id_usuario) }}"
+                                method="POST"
+                                class="d-inline"
+                                onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">
+                                <button type="submit" class="btn btn-danger btn-sm">
                                     Eliminar
                                 </button>
                             </form>
