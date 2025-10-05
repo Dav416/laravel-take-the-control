@@ -7,11 +7,15 @@ use App\Models\Transaccion;
 use App\Models\CategoriaTransaccion;
 use App\Models\EntidadFinanciera;
 use App\Models\ProyeccionFinanciera;
-
+use App\Models\Tipo;
 class TransaccionSeeder extends Seeder
 {
     public function run(): void
     {
+        // Obtener tipos
+        $tipoIngreso = Tipo::where('nombre_tipo', 'Ingreso')->first();
+        $tipoEgreso = Tipo::where('nombre_tipo', 'Egreso')->first();
+
         // Obtener categorías
         $catSalario = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Salario')->first();
         $catAlimentacion = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Alimentación')->first();
@@ -32,6 +36,7 @@ class TransaccionSeeder extends Seeder
                 'nombre_transaccion' => 'Salario Octubre',
                 'descripcion_transaccion' => 'Pago de nómina mensual',
                 'valor_transaccion' => 3500000,
+                'tipo_id' => $tipoIngreso->id_tipo,
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => null, // Ingreso regular, no va a proyección
@@ -40,6 +45,7 @@ class TransaccionSeeder extends Seeder
                 'nombre_transaccion' => 'Supermercado',
                 'descripcion_transaccion' => 'Compra semanal en Éxito',
                 'valor_transaccion' => 250000,
+                'tipo_id' => $tipoEgreso->id_tipo,
                 'categoria_id' => $catAlimentacion->id_categoria_transaccion,
                 'entidad_financiera_id' => $nequi->id_entidad_financiera,
                 'proyeccion_financiera_id' => null, // Gasto regular
@@ -48,6 +54,7 @@ class TransaccionSeeder extends Seeder
                 'nombre_transaccion' => 'Gasolina',
                 'descripcion_transaccion' => 'Tanque lleno',
                 'valor_transaccion' => 150000,
+                'tipo_id' => $tipoEgreso->id_tipo,
                 'categoria_id' => $catTransporte->id_categoria_transaccion,
                 'entidad_financiera_id' => $efectivo->id_entidad_financiera,
                 'proyeccion_financiera_id' => null, // Gasto regular
@@ -56,6 +63,7 @@ class TransaccionSeeder extends Seeder
                 'nombre_transaccion' => 'Ahorro vacaciones',
                 'descripcion_transaccion' => 'Aporte mensual a meta de vacaciones',
                 'valor_transaccion' => 500000,
+                'tipo_id' => $tipoIngreso->id_tipo,
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyVacaciones->id_proyeccion_financiera ?? null,
@@ -64,6 +72,7 @@ class TransaccionSeeder extends Seeder
                 'nombre_transaccion' => 'Transferencia fondo emergencia',
                 'descripcion_transaccion' => 'Ahorro mensual para imprevistos',
                 'valor_transaccion' => 300000,
+                'tipo_id' => $tipoIngreso->id_tipo,
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyEmergencia->id_proyeccion_financiera ?? null,
@@ -72,6 +81,7 @@ class TransaccionSeeder extends Seeder
                 'nombre_transaccion' => 'Aporte CDT',
                 'descripcion_transaccion' => 'Inversión en certificado de depósito',
                 'valor_transaccion' => 1000000,
+                'tipo_id' => $tipoIngreso->id_tipo,
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $nequi->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyCDT->id_proyeccion_financiera ?? null,

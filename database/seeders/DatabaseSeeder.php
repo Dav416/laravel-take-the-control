@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CategoriaTransaccionSeeder::class,
             EntidadFinancieraSeeder::class,
             UsuariosSeeder::class,
+            TipoSeeder::class,
 
             // 2. Tablas con dependencias
             ProyeccionFinancieraSeeder::class, // Depende de Usuario y CategoriaProyeccion
