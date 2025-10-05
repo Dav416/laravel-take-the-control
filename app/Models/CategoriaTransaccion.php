@@ -29,6 +29,14 @@ class CategoriaTransaccion extends Model
         'fecha_eliminacion' => 'datetime',
     ];
 
+    /**
+     * Obtener la clave de ruta para el model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'id_categoria_transaccion';
+    }
+
     // Relación con Transacciones
     public function transacciones()
     {

@@ -29,6 +29,14 @@ class EntidadFinanciera extends Model
         'fecha_eliminacion' => 'datetime',
     ];
 
+    /**
+     * Obtener la clave de ruta para el model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'id_entidad_financiera';
+    }
+
     // Relación con Transacciones
     public function transacciones()
     {

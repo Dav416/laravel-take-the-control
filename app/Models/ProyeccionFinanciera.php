@@ -32,6 +32,14 @@ class ProyeccionFinanciera extends Model
         'meta_proyeccion_financiera' => 'decimal:2',
     ];
 
+    /**
+     * Obtener la clave de ruta para el model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'id_proyeccion_financiera';
+    }
+
     // Relación con Transacciones
     public function transacciones()
     {
