@@ -189,23 +189,18 @@ class UsuarioController extends Controller
 
     /**
      * Eliminar usuario
-    */
-    public function destroy(Request $request, $id)
+     */
+    public function destroy(Request $request, Usuario $usuario)
     {
         try {
-            $usuario = Usuario::findOrFail($id);
             $usuario->delete();
 
             if ($request->wantsJson()) {
                 return response()->json(['message' => 'Usuario eliminado exitosamente']);
             }
 
-            return redirect()->route('usuarios.index')->with('error', 'Usuario eliminado correctamente');
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['error' => 'Usuario no encontrado'], 404);
-            }
-            return back()->withErrors(['error' => 'Usuario no encontrado']);
+            return redirect()->route('usuarios.index')
+                ->with('success', 'Usuario eliminado correctamente');
         } catch (\Exception $e) {
             Log::error('Error eliminando usuario: ' . $e->getMessage());
 
