@@ -11,11 +11,18 @@ Anexar la tabla de Periodos
 1. En el dashboard agrupar los registros por fechas
 2. Al agrupar los registros por fecha (periodos) hacer las operaciones aritmeticas correspondientes (suma, resta)
 
-# Análisis de siguiente paso en el módulo de transacciones
-1. Debe haber un monto total de transacciones.
-2. En el módulo de transacciones los ingresos suman y los egresos restan a el monto total.
-2. Debe ser por ciclos de tiempo haciendo uso de la fecha de creación de la transacción.
-3. Por defecto el ciclo de tiempo es el mes actual.
-4. Si la transacción es de tipo ingreso y es una proyección financiera restar en transacciones.
-5. Si la transacción es de tipo egreso y es una proyección financiera sumar en transacciones.
-6. El monto total no debe ser negativo.
+# Análisis nuevos requerimientos módulo de transacciones
+1. Debe haber un monto total disponible.
+2. El monto disponible debe establecerse por ciclos de tiempo haciendo uso de la fecha de creación de la transacción.
+3. El monto disponible se calcula en base al ciclo de tiempo y sus transacciones.
+4. Si cambia el ciclo de tiempo debe actualizar el monto disponible.
+5. El monto disponible se ve afectado por las transacciones tipo ingreso las cuales suman y las transacciones de tipo egreso las cuales restan.
+6. Por defecto el ciclo de tiempo es el mes actual.
+7. Si la transacción es de tipo ingreso y es una proyección financiera restar al monto disponible.
+8. Si la transacción es de tipo egreso y es una proyección financiera sumar a el monto disponible.
+9. El monto total no debe ser negativo.
+
+## Notas
+- Se plantea inicialmente hacer los cálculos desde el frontend. 
+- Estoy abierto a otras propuestas que faciliten la implementación.
+- Ahora existe la entidad tipos relacionada de muchos a uno con la entidad transacciones.
