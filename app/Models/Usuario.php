@@ -53,10 +53,28 @@ class Usuario extends Authenticatable
         return 'id_usuario';
     }
 
-    // Para que Laravel use 'correo_usuario' como identificador
+    /**
+     * Obtener el identificador único para la autenticación
+     */
+    public function getAuthIdentifier()
+    {
+        return $this->id_usuario; // ← Devuelve el ID numérico, no el correo
+    }
+
+    /**
+     * Obtener el nombre de la columna del identificador único
+     */
     public function getAuthIdentifierName()
     {
-        return 'correo_usuario';
+        return 'id_usuario'; // ← Esto es para las consultas
+    }
+
+    /**
+     * Obtener la columna usada para buscar el usuario (login)
+     */
+    public function username()
+    {
+        return 'correo_usuario'; // Para el login
     }
 
     // Para que Laravel use 'clave_usuario' en vez de 'password'
@@ -100,8 +118,11 @@ class Usuario extends Authenticatable
         static::deleting(function ($usuario) {
             if ($usuario->isForceDeleting()) {
                 $usuario->proyeccionesFinancieras()->forceDelete();
+                $usuario->transacciones()->forceDelete();
+                $usuario->saldosDisponibles()->forceDelete();
             } else {
                 $usuario->proyeccionesFinancieras()->delete();
+                $usuario->transacciones()->delete();
             }
         });
     }
@@ -110,5 +131,29 @@ class Usuario extends Authenticatable
     public function proyeccionesFinancieras()
     {
         return $this->hasMany(ProyeccionFinanciera::class, 'usuario_id', 'id_usuario');
+    }
+
+    /**
+     * Relación con Transacciones
+     */
+    public function transacciones()
+    {
+        return $this->hasMany(Transaccion::class, 'usuario_id', 'id_usuario');
+    }
+
+    /**
+     * Relación con Saldos Disponibles
+     */
+    public function saldosDisponibles()
+    {
+        return $this->hasMany(SaldoDisponible::class, 'usuario_id', 'id_usuario');
+    }
+
+    /**
+     * Obtener saldo del mes actual
+     */
+    public function saldoActual()
+    {
+        return SaldoDisponible::obtenerSaldo($this->id_usuario);
     }
 }
