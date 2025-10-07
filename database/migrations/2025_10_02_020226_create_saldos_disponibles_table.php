@@ -22,9 +22,6 @@ return new class extends Migration
                   ->references('id_usuario')
                   ->on('usuarios')
                   ->cascadeOnDelete();
-
-            // Un saldo único por usuario por periodo
-            $table->unique(['usuario_id', 'mes', 'anio'], 'uk_usuario_periodo');
         });
     }
 
