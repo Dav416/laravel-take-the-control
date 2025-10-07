@@ -3,9 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TransaccionController;
-// use App\Http\Controllers\CategoriaTransaccionController;
-// use App\Http\Controllers\EntidadFinancieraController;
-// use App\Http\Controllers\ProyeccionFinancieraController;
 
 /**
  * Rutas públicas
@@ -14,14 +11,24 @@ Route::get('/', [UsuarioController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [UsuarioController::class, 'login'])->name('login.post');
 
 /**
- * Rutas protegidas con autenticación de sesión (para vistas web)
+ * Rutas protegidas con autenticación de sesión
  */
 Route::middleware('auth')->group(function () {
+    // Dashboard
     Route::get('/dashboard', [UsuarioController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
+
+    // Usuarios CRUD
     Route::resource('usuarios', UsuarioController::class);
+
+    // Rutas especiales de saldo (ANTES del resource)
+    Route::get('transacciones/saldo-disponible', [TransaccionController::class, 'getSaldoDisponible'])
+        ->name('transacciones.saldo-disponible');
+    Route::post('transacciones/recalcular-saldo', [TransaccionController::class, 'recalcularSaldo'])
+        ->name('transacciones.recalcular-saldo');
+    Route::get('transacciones/historial-saldos', [TransaccionController::class, 'getHistorialSaldos'])
+        ->name('transacciones.historial-saldos');
+
+    // Transacciones CRUD (DESPUÉS de las rutas especiales)
     Route::resource('transacciones', TransaccionController::class);
-    // Route::resource('categorias', CategoriaTransaccionController::class);
-    // Route::resource('entidades', EntidadFinancieraController::class);
-    // Route::resource('proyecciones', ProyeccionFinancieraController::class);
 });

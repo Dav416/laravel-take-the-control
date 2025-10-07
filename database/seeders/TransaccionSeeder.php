@@ -8,6 +8,8 @@ use App\Models\CategoriaTransaccion;
 use App\Models\EntidadFinanciera;
 use App\Models\ProyeccionFinanciera;
 use App\Models\Tipo;
+use App\Models\Usuario;
+
 class TransaccionSeeder extends Seeder
 {
     public function run(): void
@@ -31,6 +33,9 @@ class TransaccionSeeder extends Seeder
         $proyEmergencia = ProyeccionFinanciera::where('nombre_proyeccion_financiera', 'Fondo de emergencia')->first();
         $proyCDT = ProyeccionFinanciera::where('nombre_proyeccion_financiera', 'Inversión en CDT')->first();
 
+        // Obtener usuario
+        $usuario = Usuario::where('correo_usuario', 'test@example.com')->first();
+
         $transacciones = [
             [
                 'nombre_transaccion' => 'Salario Octubre',
@@ -40,6 +45,7 @@ class TransaccionSeeder extends Seeder
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => null, // Ingreso regular, no va a proyección
+                'usuario_id' => $usuario->id_usuario,
             ],
             [
                 'nombre_transaccion' => 'Supermercado',
@@ -49,6 +55,7 @@ class TransaccionSeeder extends Seeder
                 'categoria_id' => $catAlimentacion->id_categoria_transaccion,
                 'entidad_financiera_id' => $nequi->id_entidad_financiera,
                 'proyeccion_financiera_id' => null, // Gasto regular
+                'usuario_id' => $usuario->id_usuario,
             ],
             [
                 'nombre_transaccion' => 'Gasolina',
@@ -58,6 +65,7 @@ class TransaccionSeeder extends Seeder
                 'categoria_id' => $catTransporte->id_categoria_transaccion,
                 'entidad_financiera_id' => $efectivo->id_entidad_financiera,
                 'proyeccion_financiera_id' => null, // Gasto regular
+                'usuario_id' => $usuario->id_usuario,
             ],
             [
                 'nombre_transaccion' => 'Ahorro vacaciones',
@@ -67,6 +75,7 @@ class TransaccionSeeder extends Seeder
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyVacaciones->id_proyeccion_financiera ?? null,
+                'usuario_id' => $usuario->id_usuario,
             ],
             [
                 'nombre_transaccion' => 'Transferencia fondo emergencia',
@@ -76,6 +85,7 @@ class TransaccionSeeder extends Seeder
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyEmergencia->id_proyeccion_financiera ?? null,
+                'usuario_id' => $usuario->id_usuario,
             ],
             [
                 'nombre_transaccion' => 'Aporte CDT',
@@ -85,6 +95,7 @@ class TransaccionSeeder extends Seeder
                 'categoria_id' => $catSalario->id_categoria_transaccion,
                 'entidad_financiera_id' => $nequi->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyCDT->id_proyeccion_financiera ?? null,
+                'usuario_id' => $usuario->id_usuario,
             ],
         ];
 

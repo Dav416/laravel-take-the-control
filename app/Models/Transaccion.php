@@ -26,12 +26,14 @@ class Transaccion extends Model
         'categoria_id',
         'entidad_financiera_id',
         'proyeccion_financiera_id',
+        'usuario_id',
     ];
 
     protected $casts = [
         'fecha_creacion' => 'datetime',
         'fecha_actualizacion' => 'datetime',
         'fecha_eliminacion' => 'datetime',
+        'valor_transaccion' => 'decimal:2',
     ];
 
     /**
@@ -60,5 +62,10 @@ class Transaccion extends Model
     public function tipo()
     {
         return $this->belongsTo(Tipo::class, 'tipo_id', 'id_tipo');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id_usuario');
     }
 }

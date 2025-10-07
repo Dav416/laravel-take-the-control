@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('categoria_id')->nullable();
             $table->unsignedBigInteger('entidad_financiera_id')->nullable();
             $table->unsignedBigInteger('proyeccion_financiera_id')->nullable();
+            $table->unsignedBigInteger('usuario_id')->nullable();
 
             // Fechas personalizadas
             $table->timestamp('fecha_creacion')->useCurrent();
@@ -49,6 +50,11 @@ return new class extends Migration
                   ->references('id_proyeccion_financiera')
                   ->on('proyecciones_financieras')
                   ->nullOnDelete();
+
+            $table->foreign('usuario_id', 'fk_transacciones_usuario')
+                ->references('id_usuario')
+                ->on('usuarios')
+                ->cascadeOnDelete();
         });
     }
 
