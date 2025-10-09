@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TransaccionController;
+use App\Http\Controllers\CategoriaTransaccionController;
 
 /**
  * Rutas públicas
@@ -21,7 +22,19 @@ Route::middleware('auth')->group(function () {
     // Usuarios CRUD
     Route::resource('usuarios', UsuarioController::class);
 
-    // Rutas especiales de saldo (ANTES del resource)
+    // Categorías de Transacciones CRUD
+    Route::resource('categorias-transacciones', CategoriaTransaccionController::class)
+        ->names([
+            'index' => 'categorias.index',
+            'create' => 'categorias.create',
+            'store' => 'categorias.store',
+            'show' => 'categorias.show',
+            'edit' => 'categorias.edit',
+            'update' => 'categorias.update',
+            'destroy' => 'categorias.destroy',
+        ]);
+
+    // Rutas especiales de saldo (ANTES del resource de transacciones)
     Route::get('transacciones/saldo-disponible', [TransaccionController::class, 'getSaldoDisponible'])
         ->name('transacciones.saldo-disponible');
     Route::post('transacciones/recalcular-saldo', [TransaccionController::class, 'recalcularSaldo'])
