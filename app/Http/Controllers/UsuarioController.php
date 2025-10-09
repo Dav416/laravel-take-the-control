@@ -29,7 +29,7 @@ class UsuarioController extends Controller
     public function index(Request $request)
     {
         try {
-            $usuarios = Usuario::all();
+            $usuarios = Usuario::paginate(10);
 
             if ($request->wantsJson()) {
                 return response()->json($usuarios);
