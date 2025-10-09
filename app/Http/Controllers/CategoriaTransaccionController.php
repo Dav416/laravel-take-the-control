@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriaTransaccion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CategoriaTransaccionController extends Controller
@@ -14,7 +15,7 @@ class CategoriaTransaccionController extends Controller
     public function index(Request $request)
     {
         try {
-            $categorias = CategoriaTransaccion::paginate(10);
+            $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->paginate(15);
 
             if ($request->wantsJson()) {
                 return response()->json($categorias);
@@ -22,7 +23,7 @@ class CategoriaTransaccionController extends Controller
 
             return view('categorias.index', compact('categorias'));
         } catch (\Exception $e) {
-            Log::error('Error listando categorías: '.$e->getMessage());
+            Log::error('Error listando categorías: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Error cargando categorías']);
         }
     }
@@ -32,6 +33,10 @@ class CategoriaTransaccionController extends Controller
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         return view('categorias.create');
     }
 
@@ -42,16 +47,17 @@ class CategoriaTransaccionController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nombre_categoria' => 'required|string|max:255',
-                'descripcion_categoria' => 'nullable|string',
+                'nombre_categoria_transaccion' => 'required|string|max:255|unique:categorias_transacciones,nombre_categoria_transaccion',
+                'descripcion_categoria_transaccion' => 'nullable|string',
             ]);
 
-            $categoria = CategoriaTransaccion::create($validated);
+            CategoriaTransaccion::create($validated);
 
-            return redirect()->route('categorias.index')->with('success', 'Categoría creada correctamente');
+            return redirect()->route('categorias.index')
+                ->with('success', 'Categoría creada correctamente');
         } catch (\Exception $e) {
-            Log::error('Error creando categoría: '.$e->getMessage());
-            return back()->withErrors(['error' => 'Error creando categoría']);
+            Log::error('Error creando categoría: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Error creando categoría'])->withInput();
         }
     }
 
@@ -60,7 +66,12 @@ class CategoriaTransaccionController extends Controller
      */
     public function show($id)
     {
-        $categoria = CategoriaTransaccion::findOrFail($id);
+        $categoria = CategoriaTransaccion::with('transacciones')->findOrFail($id);
+
+        if (request()->wantsJson()) {
+            return response()->json($categoria);
+        }
+
         return view('categorias.show', compact('categoria'));
     }
 
@@ -69,6 +80,10 @@ class CategoriaTransaccionController extends Controller
      */
     public function edit($id)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $categoria = CategoriaTransaccion::findOrFail($id);
         return view('categorias.edit', compact('categoria'));
     }
@@ -82,16 +97,17 @@ class CategoriaTransaccionController extends Controller
             $categoria = CategoriaTransaccion::findOrFail($id);
 
             $validated = $request->validate([
-                'nombre_categoria' => 'sometimes|string|max:255',
-                'descripcion_categoria' => 'nullable|string',
+                'nombre_categoria_transaccion' => 'required|string|max:255|unique:categorias_transacciones,nombre_categoria_transaccion,' . $id . ',id_categoria_transaccion',
+                'descripcion_categoria_transaccion' => 'nullable|string',
             ]);
 
             $categoria->update($validated);
 
-            return redirect()->route('categorias.index')->with('success', 'Categoría actualizada correctamente');
+            return redirect()->route('categorias.index')
+                ->with('success', 'Categoría actualizada correctamente');
         } catch (\Exception $e) {
-            Log::error('Error actualizando categoría: '.$e->getMessage());
-            return back()->withErrors(['error' => 'Error actualizando categoría']);
+            Log::error('Error actualizando categoría: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Error actualizando categoría'])->withInput();
         }
     }
 
@@ -102,11 +118,20 @@ class CategoriaTransaccionController extends Controller
     {
         try {
             $categoria = CategoriaTransaccion::findOrFail($id);
+
+            // Verificar si tiene transacciones asociadas
+            if ($categoria->transacciones()->count() > 0) {
+                return back()->withErrors([
+                    'error' => 'No se puede eliminar esta categoría porque tiene transacciones asociadas'
+                ]);
+            }
+
             $categoria->delete();
 
-            return redirect()->route('categorias.index')->with('error', 'Categoría eliminada correctamente');
+            return redirect()->route('categorias.index')
+                ->with('success', 'Categoría eliminada correctamente');
         } catch (\Exception $e) {
-            Log::error('Error eliminando categoría: '.$e->getMessage());
+            Log::error('Error eliminando categoría: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Error eliminando categoría']);
         }
     }
