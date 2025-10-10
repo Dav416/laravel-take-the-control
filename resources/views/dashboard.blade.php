@@ -21,7 +21,7 @@
             <div class="card h-100 shadow-sm border-0 hover-card">
                 <div class="card-body text-center p-4">
                     <div class="mb-3">
-                        <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                        <span style="font-size: 3rem;">👥</span>
                     </div>
                     <h3 class="card-title h4 mb-3">
                         Gestión de Usuarios
@@ -41,7 +41,7 @@
             <div class="card h-100 shadow-sm border-0 hover-card">
                 <div class="card-body text-center p-4">
                     <div class="mb-3">
-                        <i class="bi bi-cash-coin text-success" style="font-size: 3rem;"></i>
+                        <span style="font-size: 3rem;">💰</span>
                     </div>
                     <h3 class="card-title h4 mb-3">
                         Transacciones
@@ -51,6 +51,26 @@
                     </p>
                     <a href="{{ route('transacciones.index') }}" class="btn btn-success btn-lg w-100">
                         Ir a Transacciones
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorías -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">🏷️</span>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        Categorías
+                    </h3>
+                    <p class="card-text text-muted mb-4">
+                        Organiza tus transacciones con categorías personalizadas.
+                    </p>
+                    <a href="{{ route('categorias.index') }}" class="btn btn-warning btn-lg w-100">
+                        Ir a Categorías
                     </a>
                 </div>
             </div>
