@@ -60,7 +60,7 @@
                                   placeholder="Describe para qué se utilizará esta categoría...">{{ old('descripcion_categoria_transaccion') }}</textarea>
                         @error('descripcion_categoria_transaccion')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror>
+                        @enderror
                     </div>
 
                     <div class="alert alert-info">
