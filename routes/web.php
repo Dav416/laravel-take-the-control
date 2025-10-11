@@ -24,28 +24,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('usuarios', UsuarioController::class);
 
     // Categorías de Transacciones CRUD
-    Route::resource('categorias-transacciones', CategoriaTransaccionController::class)
-        ->names([
-            'index' => 'categorias.index',
-            'create' => 'categorias.create',
-            'store' => 'categorias.store',
-            'show' => 'categorias.show',
-            'edit' => 'categorias.edit',
-            'update' => 'categorias.update',
-            'destroy' => 'categorias.destroy',
-        ]);
+    Route::prefix('categorias-transacciones')->name('categorias.')->group(function () {
+        Route::resource('/', CategoriaTransaccionController::class)->parameters(['' => 'categoria']);
+    });
 
     // Tipos de Transacciones CRUD
-    Route::resource('tipos', TipoController::class)
-        ->names([
-            'index' => 'tipos.index',
-            'create' => 'tipos.create',
-            'store' => 'tipos.store',
-            'show' => 'tipos.show',
-            'edit' => 'tipos.edit',
-            'update' => 'tipos.update',
-            'destroy' => 'tipos.destroy',
-        ]);
+    Route::resource('tipos', TipoController::class);
 
     // Entidades Financieras CRUD
     Route::resource('entidades', EntidadFinancieraController::class);
