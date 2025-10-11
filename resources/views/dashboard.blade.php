@@ -27,7 +27,7 @@
                         Gestión de Usuarios
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Administra los usuarios registrados en el sistema.
+                        Administra los usuarios registrados.
                     </p>
                     <a href="{{ route('usuarios.index') }}" class="btn btn-primary btn-lg w-100">
                         Ir a Usuarios
@@ -67,7 +67,7 @@
                         Categorías
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Organiza tus transacciones con categorías personalizadas.
+                        Administra tus categorías.
                     </p>
                     <a href="{{ route('categorias.index') }}" class="btn btn-warning btn-lg w-100">
                         Ir a Categorías
@@ -87,7 +87,7 @@
                         Tipos
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Organiza tus transacciones con tipos personalizados.
+                        Administra tus tipos.
                     </p>
                     <a href="{{ route('tipos.index') }}" class="btn btn-warning btn-lg w-100">
                         Ir a Tipos
@@ -107,7 +107,7 @@
                         Entidades Financieras
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Administra tus entidades personalizados.
+                        Administra tus entidades.
                     </p>
                     <a href="{{ route('entidades.index') }}" class="btn btn-warning btn-lg w-100">
                         Ir a Entidades
