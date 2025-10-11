@@ -5,8 +5,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\CategoriaTransaccionController;
 use App\Http\Controllers\TipoController;
-use App\Models\EntidadFinanciera;
-
+use App\Http\Controllers\EntidadFinancieraController;
 /**
  * Rutas públicas
  */
@@ -48,17 +47,8 @@ Route::middleware('auth')->group(function () {
             'destroy' => 'tipos.destroy',
         ]);
 
-    // Entidades Financieras de Transacciones CRUD
-    Route::resource('entidades', EntidadFinanciera::class)
-        ->names([
-            'index' => 'entidades.index',
-            'create' => 'entidades.create',
-            'store' => 'entidades.store',
-            'show' => 'entidades.show',
-            'edit' => 'entidades.edit',
-            'update' => 'entidades.update',
-            'destroy' => 'entidades.destroy',
-        ]);
+    // Entidades Financieras CRUD
+    Route::resource('entidades', EntidadFinancieraController::class);
 
     // Rutas especiales de saldo (ANTES del resource de transacciones)
     Route::get('transacciones/saldo-disponible', [TransaccionController::class, 'getSaldoDisponible'])
