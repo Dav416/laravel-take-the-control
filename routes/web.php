@@ -5,7 +5,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\CategoriaTransaccionController;
 use App\Http\Controllers\TipoController;
-
+use App\Http\Controllers\EntidadFinancieraController;
 /**
  * Rutas públicas
  */
@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
             'update' => 'tipos.update',
             'destroy' => 'tipos.destroy',
         ]);
+
+    // Entidades Financieras CRUD
+    Route::resource('entidades', EntidadFinancieraController::class);
 
     // Rutas especiales de saldo (ANTES del resource de transacciones)
     Route::get('transacciones/saldo-disponible', [TransaccionController::class, 'getSaldoDisponible'])

@@ -95,6 +95,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Entidades -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">🏦</span>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        Entidades Financieras
+                    </h3>
+                    <p class="card-text text-muted mb-4">
+                        Administra tus entidades personalizados.
+                    </p>
+                    <a href="{{ route('entidades.index') }}" class="btn btn-warning btn-lg w-100">
+                        Ir a Entidades
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Estadísticas rápidas (opcional) -->
