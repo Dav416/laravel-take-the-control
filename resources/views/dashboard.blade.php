@@ -75,6 +75,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Tipos -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">🪙</span>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        Tipos
+                    </h3>
+                    <p class="card-text text-muted mb-4">
+                        Organiza tus transacciones con tipos personalizados.
+                    </p>
+                    <a href="{{ route('tipos.index') }}" class="btn btn-warning btn-lg w-100">
+                        Ir a Tipos
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Estadísticas rápidas (opcional) -->
