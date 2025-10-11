@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class TipoController extends Controller
@@ -32,6 +33,9 @@ class TipoController extends Controller
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
         return view('tipos.create');
     }
 
@@ -72,7 +76,11 @@ class TipoController extends Controller
     {
         $tipo = Tipo::with('transacciones')->findOrFail($id);
 
-        return response()->json($tipo);
+        if (request()->wantsJson()) {
+            return response()->json($tipo);
+        }
+
+        return view('tipos.show', compact('tipo'));
     }
 
     /**
@@ -80,8 +88,11 @@ class TipoController extends Controller
      */
     public function edit($id)
     {
-        $tipo = Tipo::findOrFail($id);
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
+        $tipo = Tipo::findOrFail($id);
         return view('tipos.edit', compact('tipo'));
     }
 

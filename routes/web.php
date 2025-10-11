@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\CategoriaTransaccionController;
+use App\Http\Controllers\TipoController;
 
 /**
  * Rutas públicas
@@ -32,6 +33,18 @@ Route::middleware('auth')->group(function () {
             'edit' => 'categorias.edit',
             'update' => 'categorias.update',
             'destroy' => 'categorias.destroy',
+        ]);
+
+    // Tipos de Transacciones CRUD
+    Route::resource('tipos', TipoController::class)
+        ->names([
+            'index' => 'tipos.index',
+            'create' => 'tipos.create',
+            'store' => 'tipos.store',
+            'show' => 'tipos.show',
+            'edit' => 'tipos.edit',
+            'update' => 'tipos.update',
+            'destroy' => 'tipos.destroy',
         ]);
 
     // Rutas especiales de saldo (ANTES del resource de transacciones)
