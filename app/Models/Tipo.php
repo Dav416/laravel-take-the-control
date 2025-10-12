@@ -20,6 +20,7 @@ class Tipo extends Model
     protected $fillable = [
         'nombre_tipo',
         'descripcion_tipo',
+        'categoria_tipo_id',
     ];
 
     protected $casts = [
@@ -42,5 +43,13 @@ class Tipo extends Model
     public function transacciones()
     {
         return $this->hasMany(Transaccion::class, 'tipo_id', 'id_tipo');
+    }
+
+    /**
+     * Relación: Un tipo tiene una categoría
+     */
+    public function categoria()
+    {
+        return $this->belongsTo(CategoriaTipo::class, 'categoria_tipo_id', 'id_categoria_tipo');
     }
 }
