@@ -50,6 +50,27 @@
                     </div>
 
                     <div class="mb-4">
+                        <label for="categoria_tipo_id" class="form-label">
+                            Categoría <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select @error('categoria_tipo_id') is-invalid @enderror"
+                                id="categoria_tipo_id"
+                                name="categoria_tipo_id"
+                                required>
+                            <option value="">Seleccione una categoría</option>
+                            @foreach($categorias as $categoria)
+                                <option value="{{ $categoria->id_categoria_tipo }}"
+                                        {{ old('categoria_tipo_id') == $categoria->id_categoria_tipo ? 'selected' : '' }}>
+                                    {{ $categoria->nombre_categoria_tipo }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('categoria_tipo_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
                         <label for="descripcion_tipo" class="form-label">
                             Descripción (Opcional)
                         </label>
