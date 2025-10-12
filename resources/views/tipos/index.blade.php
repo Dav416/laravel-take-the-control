@@ -98,6 +98,7 @@
                     <tr>
                         <th width="80">ID</th>
                         <th>Nombre</th>
+                        <th class="text-center">Categoría</th>
                         <th>Descripción</th>
                         <th width="120" class="text-center">Transacciones</th>
                         <th width="150">Fecha Creación</th>
@@ -113,6 +114,9 @@
                                 <span class="badge bg-success me-2" style="font-size: 1.2rem;">🪙</span>
                                 <span class="fw-semibold">{{ $tipo->nombre_tipo }}</span>
                             </div>
+                        </td>
+                        <td class="text-center">
+                            {{ $tipo->categoria->nombre_categoria_tipo ?? 'N/A' }}
                         </td>
                         <td>
                             <small class="text-muted">

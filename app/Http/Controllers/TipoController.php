@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tipo;
+use App\Models\CategoriaTipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,9 @@ class TipoController extends Controller
     public function index(Request $request)
     {
         try {
-            $tipos = Tipo::orderBy('nombre_tipo')->paginate(15);
+            $query = Tipo::with(['categoria']);
+
+            $tipos = $query->orderBy('fecha_creacion', 'desc')->paginate(15);
 
             if ($request->wantsJson()) {
                 return response()->json($tipos);
@@ -36,7 +39,10 @@ class TipoController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('tipos.create');
+
+        $categorias = CategoriaTipo::orderBy('nombre_categoria_tipo')->get();
+
+        return view('tipos.create', compact('categorias'));
     }
 
     /**
@@ -48,6 +54,7 @@ class TipoController extends Controller
             $validated = $request->validate([
                 'nombre_tipo' => 'required|string|max:55|unique:tipos,nombre_tipo',
                 'descripcion_tipo' => 'nullable|string',
+                'categoria_tipo_id' => 'required|exists:categorias_tipos,id_categoria_tipo',
             ]);
 
             Tipo::create($validated);
@@ -74,7 +81,7 @@ class TipoController extends Controller
      */
     public function show($id)
     {
-        $tipo = Tipo::with('transacciones')->findOrFail($id);
+        $tipo = Tipo::with('categoria')->findOrFail($id);
 
         if (request()->wantsJson()) {
             return response()->json($tipo);
@@ -93,7 +100,9 @@ class TipoController extends Controller
         }
 
         $tipo = Tipo::findOrFail($id);
-        return view('tipos.edit', compact('tipo'));
+        $categorias = CategoriaTipo::orderBy('nombre_categoria_tipo')->get();
+
+        return view('tipos.edit', compact('tipo', 'categorias'));
     }
 
     /**
@@ -107,6 +116,7 @@ class TipoController extends Controller
             $validated = $request->validate([
                 'nombre_tipo' => 'required|string|max:55|unique:tipos,nombre_tipo,' . $id . ',id_tipo',
                 'descripcion_tipo' => 'nullable|string',
+                'categoria_tipo_id' => 'required|exists:categorias_tipos,id_categoria_tipo',
             ]);
 
             $tipo->update($validated);
@@ -134,12 +144,12 @@ class TipoController extends Controller
     public function destroy(Request $request, Tipo $tipo)
     {
         try {
-            // Verificar si tiene transacciones asociadas
-            if ($tipo->transacciones()->count() > 0) {
+            // Verificar si tiene tipos asociados
+            if ($tipo->categoria()->count() > 0) {
                 if ($request->wantsJson()) {
-                    return response()->json(['error' => 'No se puede eliminar un tipo con transacciones asociadas'], 400);
+                    return response()->json(['error' => 'No se puede eliminar un tipo con categoria asociada'], 400);
                 }
-                return back()->withErrors(['error' => 'No se puede eliminar un tipo con transacciones asociadas']);
+                return back()->withErrors(['error' => 'No se puede eliminar un tipo con categoria asociada']);
             }
 
             $tipo->delete();

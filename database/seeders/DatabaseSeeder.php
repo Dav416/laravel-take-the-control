@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             // 1. Tablas sin dependencias
             CategoriaProyeccionSeeder::class,
             CategoriaTransaccionSeeder::class,
+            CategoriaTipoSeeder::class,
             EntidadFinancieraSeeder::class,
             UsuariosSeeder::class,
             TipoSeeder::class,
