@@ -65,7 +65,7 @@ class SaldoDisponible extends Model
         $saldo = 0;
 
         foreach ($transacciones as $trans) {
-            $esIngreso = $trans->tipo->nombre_tipo === 'Ingreso';
+            $esIngreso = $trans->tipo->categoria_tipo_id === 1;
             $esProyeccion = !is_null($trans->proyeccion_financiera_id);
 
             if ($esIngreso && !$esProyeccion) {
