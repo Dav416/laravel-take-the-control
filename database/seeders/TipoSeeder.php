@@ -13,10 +13,12 @@ class TipoSeeder extends Seeder
             [
                 'nombre_tipo' => 'Ingreso',
                 'descripcion_tipo' => 'Transacciones que representan entradas de dinero',
+                'categoria_tipo_id' => 1,
             ],
             [
                 'nombre_tipo' => 'Egreso',
                 'descripcion_tipo' => 'Transacciones que representan salidas de dinero',
+                'categoria_tipo_id' => 2,
             ],
         ];
 
