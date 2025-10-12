@@ -11,3 +11,5 @@ Anexar la tabla de Periodos
 1. En el dashboard agrupar los registros por fechas
 2. Al agrupar los registros por fecha (periodos) hacer las operaciones aritmeticas correspondientes (suma, resta)
 
+## Proyecciones de gastos
+Generar la lógica respectiva.
