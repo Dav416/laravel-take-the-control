@@ -80,11 +80,11 @@
                             <td>{{ $transaccion->id_transaccion }}</td>
                             <td>{{ $transaccion->nombre_transaccion }}</td>
                             <td>{{ Str::limit($transaccion->descripcion_transaccion, 40) }}</td>
-                            <td class="fw-bold {{ $transaccion->tipo->categoria_tipo_id === 1 ? 'text-success' : 'text-danger' }}">
-                                {{ $transaccion->tipo->categoria_tipo_id === 1 ? '+' : '-' }}${{ number_format($transaccion->valor_transaccion, 0, ',', '.') }}
+                            <td class="fw-bold {{ $transaccion->tipo->categoria_tipo_id === 1 && $transaccion->proyeccion_financiera_id === null ? 'text-success' : 'text-danger' }}">
+                                {{ $transaccion->tipo->categoria_tipo_id === 1 && $transaccion->proyeccion_financiera_id === null ? '+' : '-' }}${{ number_format($transaccion->valor_transaccion, 0, ',', '.') }}
                             </td>
                             <td>
-                                <span class="badge {{ $transaccion->tipo->categoria_tipo_id === 1 ? 'bg-success' : 'bg-danger' }}">
+                                <span class="badge {{ $transaccion->tipo->categoria_tipo_id === 1  ? 'bg-success' : 'bg-danger' }}">
                                     {{ $transaccion->tipo->nombre_tipo ?? 'N/A' }}
                                 </span>
                             </td>
