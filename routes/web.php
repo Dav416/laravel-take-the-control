@@ -38,19 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('entidades', EntidadFinancieraController::class);
 
     // Categorías de Proyecciones CRUD
-    // Route::prefix('categorias-proyecciones')->name('categorias.')->group(function () {
-    //     Route::resource('/', CategoriaProyeccionController::class)->parameters(['' => 'categoria']);
-    // });
-
-    Route::resource('categorias-proyecciones', CategoriaProyeccionController::class)
-        ->names([
-            'index' => 'categorias-proyecciones.index',
-            'create' => 'categorias-proyecciones.create',
-            'store' => 'categorias-proyecciones.store',
-            'edit' => 'categorias-proyecciones.edit',
-            'update' => 'categorias-proyecciones.update',
-            'destroy' => 'categorias-proyecciones.destroy',
-        ]);
+    Route::resource('categorias-proyecciones', CategoriaProyeccionController::class);
 
     // Proyecciones Financieras CRUD
     Route::resource('proyecciones', ProyeccionFinancieraController::class);
