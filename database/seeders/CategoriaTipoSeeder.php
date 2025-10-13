@@ -12,11 +12,11 @@ class CategoriaTipoSeeder extends Seeder
         $categorias = [
             [
                 'nombre_categoria_tipo' => 'Ingreso',
-                'descripcion_categoria_tipo' => 'Entrada de dinero.',
+                'descripcion_categoria_tipo' => 'Representa entradas de dinero.',
             ],
             [
                 'nombre_categoria_tipo' => 'Egreso',
-                'descripcion_categoria_tipo' => 'Salida de dinero.',
+                'descripcion_categoria_tipo' => 'Representa salidas de dinero.',
             ],
         ];
 
