@@ -6,6 +6,9 @@ use App\Http\Controllers\TransaccionController;
 use App\Http\Controllers\CategoriaTransaccionController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\EntidadFinancieraController;
+use App\Http\Controllers\ProyeccionFinancieraController;
+use App\Http\Controllers\CategoriaProyeccionController;
+
 /**
  * Rutas públicas
  */
@@ -33,6 +36,12 @@ Route::middleware('auth')->group(function () {
 
     // Entidades Financieras CRUD
     Route::resource('entidades', EntidadFinancieraController::class);
+
+    // Categorías de Proyecciones CRUD
+    Route::resource('categorias-proyecciones', CategoriaProyeccionController::class);
+
+    // Proyecciones Financieras CRUD
+    Route::resource('proyecciones', ProyeccionFinancieraController::class);
 
     // Rutas especiales de saldo (ANTES del resource de transacciones)
     Route::get('transacciones/saldo-disponible', [TransaccionController::class, 'getSaldoDisponible'])

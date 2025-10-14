@@ -64,12 +64,12 @@
                         <span style="font-size: 3rem;">🏷️</span>
                     </div>
                     <h3 class="card-title h4 mb-3">
-                        Categorías
+                        Categorías de Transacciones
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Administra tus categorías.
+                        Clasifica tus categorías de transacciones.
                     </p>
-                    <a href="{{ route('categorias.index') }}" class="btn btn-warning btn-lg w-100">
+                    <a href="{{ route('categorias.index') }}" class="btn btn-secondary btn-lg w-100">
                         Ir a Categorías
                     </a>
                 </div>
@@ -87,9 +87,9 @@
                         Tipos
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Administra tus tipos.
+                        Administra y establece tus tipos.
                     </p>
-                    <a href="{{ route('tipos.index') }}" class="btn btn-warning btn-lg w-100">
+                    <a href="{{ route('tipos.index') }}" class="btn btn-dark btn-lg w-100">
                         Ir a Tipos
                     </a>
                 </div>
@@ -107,10 +107,50 @@
                         Entidades Financieras
                     </h3>
                     <p class="card-text text-muted mb-4">
-                        Administra tus entidades.
+                        Administra y establece tus entidades.
                     </p>
                     <a href="{{ route('entidades.index') }}" class="btn btn-warning btn-lg w-100">
                         Ir a Entidades
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proyecciones Financieras -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">🎯</span>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        Proyecciones
+                    </h3>
+                    <p class="card-text text-muted mb-4">
+                        Establece y alcanza tus metas financieras.
+                    </p>
+                    <a href="{{ route('proyecciones.index') }}" class="btn btn-info btn-lg w-100 text-white">
+                        Ir a Proyecciones
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorías de Proyecciones -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">📂</span>
+                    </div>
+                    <h3 class="card-title h4 mb-3">
+                        Categorías de Proyecciones
+                    </h3>
+                    <p class="card-text text-muted mb-4">
+                        Clasifica tus proyecciones financieras.
+                    </p>
+                    <a href="{{ route('categorias-proyecciones.index') }}" class="btn btn-primary btn-lg w-100">
+                        Ir a Categorías
                     </a>
                 </div>
             </div>
