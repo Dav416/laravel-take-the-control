@@ -24,10 +24,10 @@
                     <li class="nav-item">
                         <a href="{{ route('categorias.index') }}" class="nav-link">Categorías</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item d-flex align-items-center">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                            <button type="submit" class="btn btn-outline-light btn-sm fw-bold ms-1">Cerrar Sesión</button>
                         </form>
                     </li>
                 </ul>
