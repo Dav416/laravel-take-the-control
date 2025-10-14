@@ -23,6 +23,7 @@ class ProyeccionFinanciera extends Model
         'descripcion_proyeccion_financiera',
         'meta_proyeccion_financiera',
         'categoria_id',
+        'usuario_id',
     ];
 
     protected $casts = [
