@@ -7,9 +7,6 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Nueva Proyección Financiera</h1>
-            <a href="{{ route('proyecciones.index') }}" class="btn btn-secondary">
-                ← Volver
-            </a>
         </div>
 
         @if($errors->any())
@@ -107,8 +104,8 @@
                             @error('categoria_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="form-text text-muted">
-                                <a href="{{ route('categorias-proyecciones.create') }}" target="_blank">
+                            <small class="form-text text-muted btn btn-info ">
+                                <a class="text-white text-decoration-none" href="{{ route('categorias-proyecciones.create') }}" target="_blank">
                                     + Crear nueva categoría
                                 </a>
                             </small>
@@ -131,8 +128,8 @@
                             Cancelar
                         </a>
                         <button type="submit"
-                                class="btn btn-info">
-                            💾 Guardar Proyección
+                                class="btn btn-info text-white">
+                            Guardar Proyección
                         </button>
                     </div>
                 </form>
