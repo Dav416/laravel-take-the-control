@@ -29,17 +29,17 @@ class ProyeccionFinancieraSeeder extends Seeder
             ],
             [
                 'nombre_proyeccion_financiera' => 'Fondo de emergencia',
-                'descripcion_proyeccion_financiera' => 'Crear fondo de 6 meses de gastos',
-                'meta_proyeccion_financiera' => 10000000,
+                'descripcion_proyeccion_financiera' => 'Crear fondo de 2 meses de gastos',
+                'meta_proyeccion_financiera' => 6000000,
                 'categoria_id' => $catAhorro->id_categoria_proyeccion,
                 'usuario_id' => $usuario1->id_usuario,
             ],
             [
                 'nombre_proyeccion_financiera' => 'Inversión en CDT',
-                'descripcion_proyeccion_financiera' => 'Invertir en certificado de depósito a término',
-                'meta_proyeccion_financiera' => 15000000,
+                'descripcion_proyeccion_financiera' => 'Invertir con proposito.',
+                'meta_proyeccion_financiera' => 10000000,
                 'categoria_id' => $catInversion->id_categoria_proyeccion,
-                'usuario_id' => $usuario2->id_usuario,
+                'usuario_id' => $usuario1->id_usuario,
             ],
             [
                 'nombre_proyeccion_financiera' => 'Pago de tarjeta de crédito',

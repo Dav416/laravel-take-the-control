@@ -22,6 +22,9 @@ class TransaccionSeeder extends Seeder
         $catSalario = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Salario')->first();
         $catAlimentacion = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Alimentación')->first();
         $catTransporte = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Transporte')->first();
+        $catInversiones = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Inversiones')->first();
+        $catVivienda = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Vivienda')->first();
+        $catOtros = CategoriaTransaccion::where('nombre_categoria_transaccion', 'Otros')->first();
 
         // Obtener entidades
         $bancolombia = EntidadFinanciera::where('nombre_entidad_financiera', 'Bancolombia')->first();
@@ -49,8 +52,8 @@ class TransaccionSeeder extends Seeder
             ],
             [
                 'nombre_transaccion' => 'Supermercado',
-                'descripcion_transaccion' => 'Compra semanal en Éxito',
-                'valor_transaccion' => 250000,
+                'descripcion_transaccion' => 'Compra quincenal en Éxito',
+                'valor_transaccion' => 300000,
                 'tipo_id' => $tipoEgreso->id_tipo,
                 'categoria_id' => $catAlimentacion->id_categoria_transaccion,
                 'entidad_financiera_id' => $nequi->id_entidad_financiera,
@@ -59,8 +62,8 @@ class TransaccionSeeder extends Seeder
             ],
             [
                 'nombre_transaccion' => 'Gasolina',
-                'descripcion_transaccion' => 'Tanque lleno',
-                'valor_transaccion' => 150000,
+                'descripcion_transaccion' => 'Tanque lleno para 10 días',
+                'valor_transaccion' => 50000,
                 'tipo_id' => $tipoEgreso->id_tipo,
                 'categoria_id' => $catTransporte->id_categoria_transaccion,
                 'entidad_financiera_id' => $efectivo->id_entidad_financiera,
@@ -72,7 +75,7 @@ class TransaccionSeeder extends Seeder
                 'descripcion_transaccion' => 'Aporte mensual a meta de vacaciones',
                 'valor_transaccion' => 500000,
                 'tipo_id' => $tipoIngreso->id_tipo,
-                'categoria_id' => $catSalario->id_categoria_transaccion,
+                'categoria_id' => $catOtros->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyVacaciones->id_proyeccion_financiera ?? null,
                 'usuario_id' => $usuario->id_usuario,
@@ -82,7 +85,7 @@ class TransaccionSeeder extends Seeder
                 'descripcion_transaccion' => 'Ahorro mensual para imprevistos',
                 'valor_transaccion' => 300000,
                 'tipo_id' => $tipoIngreso->id_tipo,
-                'categoria_id' => $catSalario->id_categoria_transaccion,
+                'categoria_id' => $catVivienda->id_categoria_transaccion,
                 'entidad_financiera_id' => $bancolombia->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyEmergencia->id_proyeccion_financiera ?? null,
                 'usuario_id' => $usuario->id_usuario,
@@ -90,9 +93,9 @@ class TransaccionSeeder extends Seeder
             [
                 'nombre_transaccion' => 'Aporte CDT',
                 'descripcion_transaccion' => 'Inversión en certificado de depósito',
-                'valor_transaccion' => 1000000,
+                'valor_transaccion' => 400000,
                 'tipo_id' => $tipoIngreso->id_tipo,
-                'categoria_id' => $catSalario->id_categoria_transaccion,
+                'categoria_id' => $catInversiones->id_categoria_transaccion,
                 'entidad_financiera_id' => $nequi->id_entidad_financiera,
                 'proyeccion_financiera_id' => $proyCDT->id_proyeccion_financiera ?? null,
                 'usuario_id' => $usuario->id_usuario,
