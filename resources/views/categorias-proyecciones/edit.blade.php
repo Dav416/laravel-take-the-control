@@ -7,9 +7,6 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Editar Categoría</h1>
-            <a href="{{ route('categorias-proyecciones.index') }}" class="btn btn-secondary">
-                ← Volver
-            </a>
         </div>
 
         @if($errors->any())
@@ -116,8 +113,8 @@
                                 Cancelar
                             </a>
                             <button type="submit"
-                                    class="btn btn-primary">
-                                💾 Actualizar Categoría
+                                    class="btn btn-warning">
+                                Actualizar Categoría
                             </button>
                         </div>
                     </div>

@@ -13,7 +13,7 @@
     <div class="col-12 col-md-6">
         <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
             <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                ← Volver
+                Volver
             </a>
             <a href="{{ route('categorias-proyecciones.create') }}" class="btn btn-primary">
                 + Nueva Categoría
@@ -110,7 +110,7 @@
                         <td class="fw-bold">{{ $categoria->id_categoria_proyeccion }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <span class="badge bg-primary me-2" style="font-size: 1.2rem;">📂</span>
+                                <span class="badge bg-purple me-2" style="font-size: 1.2rem;">📂</span>
                                 <span class="fw-semibold">{{ $categoria->nombre_categoria_proyeccion }}</span>
                             </div>
                         </td>
@@ -187,12 +187,6 @@
         </div>
     </div>
     @endif
-</div>
-
-<div class="mt-4">
-    <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-        ← Volver al Dashboard
-    </a>
 </div>
 
 <style>

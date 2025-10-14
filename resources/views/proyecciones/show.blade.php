@@ -6,11 +6,8 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>{{ $proyeccion->nombre_proyeccion_financiera }}</h1>
     <div class="d-flex gap-2">
-        <a href="{{ route('proyecciones.index') }}" class="btn btn-secondary">
-            ← Volver
-        </a>
         <a href="{{ route('proyecciones.edit', $proyeccion->id_proyeccion_financiera) }}" class="btn btn-warning">
-            Editar
+            Editar Proyección
         </a>
     </div>
 </div>
@@ -222,7 +219,7 @@
 
 <div class="mt-4">
     <a href="{{ route('proyecciones.index') }}" class="btn btn-secondary">
-        ← Volver al Listado
+        Volver al Listado
     </a>
 </div>
 @endsection
