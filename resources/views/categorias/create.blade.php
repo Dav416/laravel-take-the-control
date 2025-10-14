@@ -7,9 +7,6 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Nueva Categoría de Transacción</h1>
-            <a href="{{ route('categorias.index') }}" class="btn btn-secondary">
-                ← Volver
-            </a>
         </div>
 
         @if($errors->any())
@@ -73,9 +70,10 @@
                            class="btn btn-secondary">
                             Cancelar
                         </a>
-                        <button type="submit"
-                                class="btn btn-success">
-                            💾 Guardar Categoría
+                        <button
+                            type="submit"
+                            class="btn btn-info text-white">
+                            Guardar Categoría
                         </button>
                     </div>
                 </form>

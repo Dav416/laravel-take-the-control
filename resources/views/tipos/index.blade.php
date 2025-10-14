@@ -6,16 +6,16 @@
 <div class="row align-items-center mb-4">
     <div class="col-12 col-md-6 mb-3 mb-md-0">
         <h1 class="mb-0">
-            <span class="badge bg-success me-2" style="font-size: 1.5rem;">🪙</span>
+            <span class="badge bg-dark me-2" style="font-size: 1.5rem;">🪙</span>
             Tipos de Transacciones
         </h1>
     </div>
     <div class="col-12 col-md-6">
         <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
             <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                ← Volver
+                Volver
             </a>
-            <a href="{{ route('tipos.create') }}" class="btn btn-success">
+            <a href="{{ route('tipos.create') }}" class="btn btn-primary">
                 + Nuevo Tipo
             </a>
         </div>
@@ -111,7 +111,7 @@
                         <td class="fw-bold">{{ $tipo->id_tipo }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <span class="badge bg-success me-2" style="font-size: 1.2rem;">🪙</span>
+                                <span class="badge bg-dark me-2" style="font-size: 1.2rem;">🪙</span>
                                 <span class="fw-semibold">{{ $tipo->nombre_tipo }}</span>
                             </div>
                         </td>
@@ -191,12 +191,6 @@
         </div>
     </div>
     @endif
-</div>
-
-<div class="mt-4">
-    <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-        ← Volver al Dashboard
-    </a>
 </div>
 
 <style>

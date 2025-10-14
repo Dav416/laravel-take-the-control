@@ -3,12 +3,23 @@
 @section('title', 'Transacciones')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Transacciones</h1>
-    <div>
-        <a href="{{ route('transacciones.create') }}" class="btn btn-primary">
-            + Nueva Transacción
-        </a>
+
+<div class="row align-items-center mb-4">
+    <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <h1 class="mb-0">
+            Transacciones
+        </h1>
+    </div>
+    <div class="col-12 col-md-6 col-xs-4">
+        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary">
+                Volver
+            </a>
+
+            <a href="{{ route('transacciones.create') }}" class="btn btn-primary">
+                + Nueva Transacción
+            </a>
+        </div>
     </div>
 </div>
 
@@ -128,17 +139,7 @@
             </table>
         </div>
     </div>
-</div>
-
-<div class="d-flex justify-content-between align-items-center mt-3">
-    <div>
-        <a href="{{ route('dashboard') }}" class="btn btn-secondary">↩ Volver</a>
-        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-            @csrf
-            <button type="submit" class="btn btn-secondary">Cerrar sesión</button>
-        </form>
-    </div>
-    <div>
+    <div class="p-2">
         {{ $transacciones->links('pagination::bootstrap-5') }}
     </div>
 </div>

@@ -7,9 +7,6 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Nuevo Tipo Para Transacciones</h1>
-            <a href="{{ route('tipos.index') }}" class="btn btn-secondary">
-                ← Volver
-            </a>
         </div>
 
         @if($errors->any())
@@ -94,8 +91,8 @@
                             Cancelar
                         </a>
                         <button type="submit"
-                                class="btn btn-success">
-                            💾 Guardar Tipo
+                                class="btn btn-info text-white">
+                            Guardar Tipo
                         </button>
                     </div>
                 </form>
