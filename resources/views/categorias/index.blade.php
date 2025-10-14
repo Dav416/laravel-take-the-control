@@ -6,16 +6,16 @@
 <div class="row align-items-center mb-4">
     <div class="col-12 col-md-6 mb-3 mb-md-0">
         <h1 class="mb-0">
-            <span class="badge bg-success me-2" style="font-size: 1.5rem;">🏷️</span>
+            <span class="badge bg-secondary me-2" style="font-size: 1.5rem;">🏷️</span>
             Categorías de Transacciones
         </h1>
     </div>
     <div class="col-12 col-md-6">
         <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
             <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                ← Volver
+                Volver
             </a>
-            <a href="{{ route('categorias.create') }}" class="btn btn-success">
+            <a href="{{ route('categorias.create') }}" class="btn btn-primary">
                 + Nueva Categoría
             </a>
         </div>
@@ -110,7 +110,7 @@
                         <td class="fw-bold">{{ $categoria->id_categoria_transaccion }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <span class="badge bg-success me-2" style="font-size: 1.2rem;">🏷️</span>
+                                <span class="badge bg-secondary me-2" style="font-size: 1.2rem;">🏷️</span>
                                 <span class="fw-semibold">{{ $categoria->nombre_categoria_transaccion }}</span>
                             </div>
                         </td>
@@ -187,12 +187,6 @@
         </div>
     </div>
     @endif
-</div>
-
-<div class="mt-4">
-    <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-        ← Volver al Dashboard
-    </a>
 </div>
 
 <style>

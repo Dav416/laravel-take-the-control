@@ -13,9 +13,9 @@
     <div class="col-12 col-md-6">
         <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
             <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                ← Volver
+                Volver
             </a>
-            <a href="{{ route('entidades.create') }}" class="btn btn-success">
+            <a href="{{ route('entidades.create') }}" class="btn btn-primary">
                 + Nueva Entidad
             </a>
         </div>
@@ -187,12 +187,6 @@
         </div>
     </div>
     @endif
-</div>
-
-<div class="mt-4">
-    <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-        ← Volver al Dashboard
-    </a>
 </div>
 
 <style>

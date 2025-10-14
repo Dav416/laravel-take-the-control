@@ -11,7 +11,7 @@
     </div>
     <div class="col-12 col-md-6 col-xs-4">
         <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
-            <a href="{{ route('dashboard') }}" class="btn btn-danger">
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary">
                 Volver
             </a>
 

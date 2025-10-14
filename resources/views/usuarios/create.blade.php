@@ -57,8 +57,8 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-success">✅ Guardar</button>
-                    <a href="{{ route('usuarios.index') }}" class="btn btn-secondary">↩ Volver</a>
+                    <a href="{{ route('usuarios.index') }}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar Usuario</button>
                 </div>
             </form>
         </div>

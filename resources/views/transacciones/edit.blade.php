@@ -7,9 +7,6 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Editar Transacción</h1>
-            <a href="{{ route('transacciones.index') }}" class="btn btn-secondary">
-                ← Volver
-            </a>
         </div>
 
         @if($errors->any())
@@ -163,7 +160,7 @@
                         <a href="{{ route('transacciones.index') }}" class="btn btn-secondary">
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-warning">
                             Actualizar Transacción
                         </button>
                     </div>

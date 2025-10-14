@@ -7,9 +7,6 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Nueva Entidad Financiera</h1>
-            <a href="{{ route('entidades.index') }}" class="btn btn-secondary">
-                ← Volver
-            </a>
         </div>
 
         @if($errors->any())
@@ -75,8 +72,8 @@
                             Cancelar
                         </a>
                         <button type="submit"
-                                class="btn btn-success">
-                            💾 Guardar Entidad
+                                class="btn btn-info text-white">
+                            Guardar Entidad
                         </button>
                     </div>
                 </form>
