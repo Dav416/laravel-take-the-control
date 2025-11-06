@@ -13,3 +13,6 @@ Anexar la tabla de Periodos
 
 ## Proyecciones de gastos
 Generar la lógica respectiva.
+
+## Estilos
+Cambiar el cdn de boostrap por bootstrap local
