@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Usuario</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@extends('layouts.app')
 
+@section('title', 'Editar Usuario')
+
+@section('content')
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-header bg-warning">
@@ -65,6 +61,4 @@
         </div>
     </div>
 </div>
-
-</body>
-</html>
+@endsection
