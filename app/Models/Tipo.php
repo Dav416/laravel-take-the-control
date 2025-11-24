@@ -21,6 +21,7 @@ class Tipo extends Model
         'nombre_tipo',
         'descripcion_tipo',
         'categoria_tipo_id',
+        'usuario_id',
     ];
 
     protected $casts = [
@@ -35,6 +36,14 @@ class Tipo extends Model
     public function getRouteKeyName()
     {
         return 'id_tipo';
+    }
+
+    /**
+     * Relación: Un tipo pertenece a un usuario
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id_usuario');
     }
 
     /**

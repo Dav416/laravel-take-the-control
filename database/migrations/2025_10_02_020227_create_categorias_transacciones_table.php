@@ -16,12 +16,20 @@ return new class extends Migration
             $table->string('nombre_categoria_transaccion', 255);
             $table->text('descripcion_categoria_transaccion')->nullable();
 
+            // Columnas FK
+            $table->unsignedBigInteger('usuario_id')->nullable();
+
             // Fechas personalizadas
             $table->timestamp('fecha_creacion')->useCurrent();
             $table->timestamp('fecha_actualizacion')->nullable()->useCurrentOnUpdate();
             $table->timestamp('fecha_eliminacion')->nullable();
 
-            // SoftDeletes personalizado (sin created_at y updated_at estándar)
+            // Relaciones
+            $table->foreign('usuario_id', 'fk_categorias_transacciones_usuario')
+                ->references('id_usuario')
+                ->on('usuarios')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

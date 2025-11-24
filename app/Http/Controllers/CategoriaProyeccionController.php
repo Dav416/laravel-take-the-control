@@ -15,7 +15,11 @@ class CategoriaProyeccionController extends Controller
     public function index(Request $request)
     {
         try {
-            $categorias = CategoriaProyeccion::withCount('proyecciones')
+            $categorias = CategoriaProyeccion::where(function($q) {
+                    $q->where('usuario_id', Auth::user()->id_usuario)
+                      ->orWhereNull('usuario_id');
+                })
+                ->withCount('proyecciones')
                 ->orderBy('nombre_categoria_proyeccion')
                 ->paginate(15);
 
@@ -49,7 +53,7 @@ class CategoriaProyeccionController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nombre_categoria_proyeccion' => 'required|string|max:255|unique:categorias_proyecciones,nombre_categoria_proyeccion',
+                'nombre_categoria_proyeccion' => 'required|string|max:255|unique:categorias_proyecciones,nombre_categoria_proyeccion,NULL,id_categoria_proyeccion,usuario_id,' . Auth::user()->id_usuario,
                 'descripcion_categoria_proyeccion' => 'nullable|string',
             ]);
 
@@ -72,7 +76,8 @@ class CategoriaProyeccionController extends Controller
             return redirect()->route('login');
         }
 
-        $categoria = CategoriaProyeccion::findOrFail($id);
+        $categoria = CategoriaProyeccion::where('usuario_id', Auth::user()->id_usuario)
+            ->findOrFail($id);
         return view('categorias-proyecciones.edit', compact('categoria'));
     }
 
@@ -82,10 +87,11 @@ class CategoriaProyeccionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $categoria = CategoriaProyeccion::findOrFail($id);
+            $categoria = CategoriaProyeccion::where('usuario_id', Auth::user()->id_usuario)
+                ->findOrFail($id);
 
             $validated = $request->validate([
-                'nombre_categoria_proyeccion' => 'required|string|max:255|unique:categorias_proyecciones,nombre_categoria_proyeccion,' . $id . ',id_categoria_proyeccion',
+                'nombre_categoria_proyeccion' => 'required|string|max:255|unique:categorias_proyecciones,nombre_categoria_proyeccion,' . $id . ',id_categoria_proyeccion,usuario_id,' . Auth::user()->id_usuario,
                 'descripcion_categoria_proyeccion' => 'nullable|string',
             ]);
 
@@ -106,6 +112,11 @@ class CategoriaProyeccionController extends Controller
     {
         try {
             $categoria = CategoriaProyeccion::findOrFail($id);
+            
+            // Solo se pueden eliminar registros propios del usuario, no los por defecto
+            if ($categoria->usuario_id !== Auth::user()->id_usuario) {
+                return back()->withErrors(['error' => 'No autorizado']);
+            }
 
             // Verificar si tiene proyecciones asociadas
             if ($categoria->proyecciones()->count() > 0) {

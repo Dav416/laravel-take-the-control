@@ -21,6 +21,7 @@ class CategoriaTransaccion extends Model
     protected $fillable = [
         'nombre_categoria_transaccion',
         'descripcion_categoria_transaccion',
+        'usuario_id',
     ];
 
     protected $casts = [
@@ -35,6 +36,14 @@ class CategoriaTransaccion extends Model
     public function getRouteKeyName()
     {
         return 'id_categoria_transaccion';
+    }
+
+    /**
+     * Relación: Una categoría de transacción pertenece a un usuario
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id_usuario');
     }
 
     // Relación con Transacciones

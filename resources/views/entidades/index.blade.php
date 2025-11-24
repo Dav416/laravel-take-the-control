@@ -131,12 +131,21 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group" role="group">
-                                <a href="{{ route('entidades.edit', $entidad->id_entidad_financiera) }}"
-                                   class="btn btn-sm btn-warning"
-                                   title="Editar">
-                                    Editar
-                                </a>
-                                @if($entidad->transacciones->count() === 0)
+                                @if($entidad->usuario_id)
+                                    <a href="{{ route('entidades.edit', $entidad->id_entidad_financiera) }}"
+                                       class="btn btn-sm btn-warning"
+                                       title="Editar">
+                                        Editar
+                                    </a>
+                                @else
+                                    <button type="button"
+                                            class="btn btn-sm btn-secondary"
+                                            disabled
+                                            title="No se puede editar registros por defecto del sistema">
+                                        📝
+                                    </button>
+                                @endif
+                                @if($entidad->usuario_id && $entidad->transacciones->count() === 0)
                                     <form action="{{ route('entidades.destroy', $entidad->id_entidad_financiera) }}"
                                           method="POST"
                                           class="d-inline"
@@ -153,7 +162,7 @@
                                     <button type="button"
                                             class="btn btn-sm btn-secondary"
                                             disabled
-                                            title="No se puede eliminar (tiene transacciones asociadas)">
+                                            title="{{ $entidad->usuario_id ? 'No se puede eliminar (tiene transacciones asociadas)' : 'No se puede eliminar registros por defecto del sistema' }}">
                                         🔒
                                     </button>
                                 @endif

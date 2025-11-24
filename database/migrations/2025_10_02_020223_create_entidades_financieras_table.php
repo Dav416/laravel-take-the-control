@@ -16,10 +16,20 @@ return new class extends Migration
             $table->string('nombre_entidad_financiera', 255);
             $table->text('descripcion_entidad_financiera')->nullable();
 
+            // Columnas FK
+            $table->unsignedBigInteger('usuario_id')->nullable();
+
             // Fechas personalizadas
             $table->timestamp('fecha_creacion')->useCurrent();
             $table->timestamp('fecha_actualizacion')->nullable()->useCurrentOnUpdate();
             $table->timestamp('fecha_eliminacion')->nullable();
+
+            // Relaciones
+            $table->foreign('usuario_id', 'fk_entidades_financieras_usuario')
+                ->references('id_usuario')
+                ->on('usuarios')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

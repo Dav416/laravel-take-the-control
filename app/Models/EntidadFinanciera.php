@@ -21,6 +21,7 @@ class EntidadFinanciera extends Model
     protected $fillable = [
         'nombre_entidad_financiera',
         'descripcion_entidad_financiera',
+        'usuario_id',
     ];
 
     protected $casts = [
@@ -35,6 +36,14 @@ class EntidadFinanciera extends Model
     public function getRouteKeyName()
     {
         return 'id_entidad_financiera';
+    }
+
+    /**
+     * Relación: Una entidad financiera pertenece a un usuario
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id_usuario');
     }
 
     // Relación con Transacciones

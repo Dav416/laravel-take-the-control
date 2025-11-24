@@ -15,7 +15,11 @@ class CategoriaTransaccionController extends Controller
     public function index(Request $request)
     {
         try {
-            $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->paginate(15);
+            $categorias = CategoriaTransaccion::where(function($q) {
+                    $q->where('usuario_id', Auth::user()->id_usuario)
+                      ->orWhereNull('usuario_id');
+                })
+                ->orderBy('nombre_categoria_transaccion')->paginate(15);
 
             if ($request->wantsJson()) {
                 return response()->json($categorias);
@@ -47,7 +51,7 @@ class CategoriaTransaccionController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nombre_categoria_transaccion' => 'required|string|max:255|unique:categorias_transacciones,nombre_categoria_transaccion',
+                'nombre_categoria_transaccion' => 'required|string|max:255|unique:categorias_transacciones,nombre_categoria_transaccion,NULL,id_categoria_transaccion,usuario_id,' . Auth::user()->id_usuario,
                 'descripcion_categoria_transaccion' => 'nullable|string',
             ]);
 
@@ -66,7 +70,11 @@ class CategoriaTransaccionController extends Controller
      */
     public function show($id)
     {
-        $categoria = CategoriaTransaccion::with('transacciones')->findOrFail($id);
+        $categoria = CategoriaTransaccion::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)
+                  ->orWhereNull('usuario_id');
+            })
+            ->with('transacciones')->findOrFail($id);
 
         if (request()->wantsJson()) {
             return response()->json($categoria);
@@ -84,7 +92,8 @@ class CategoriaTransaccionController extends Controller
             return redirect()->route('login');
         }
 
-        $categoria = CategoriaTransaccion::findOrFail($id);
+        $categoria = CategoriaTransaccion::where('usuario_id', Auth::user()->id_usuario)
+            ->findOrFail($id);
         return view('categorias.edit', compact('categoria'));
     }
 
@@ -94,10 +103,11 @@ class CategoriaTransaccionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $categoria = CategoriaTransaccion::findOrFail($id);
+            $categoria = CategoriaTransaccion::where('usuario_id', Auth::user()->id_usuario)
+                ->findOrFail($id);
 
             $validated = $request->validate([
-                'nombre_categoria_transaccion' => 'required|string|max:255|unique:categorias_transacciones,nombre_categoria_transaccion,' . $id . ',id_categoria_transaccion',
+                'nombre_categoria_transaccion' => 'required|string|max:255|unique:categorias_transacciones,nombre_categoria_transaccion,' . $id . ',id_categoria_transaccion,usuario_id,' . Auth::user()->id_usuario,
                 'descripcion_categoria_transaccion' => 'nullable|string',
             ]);
 
@@ -118,6 +128,11 @@ class CategoriaTransaccionController extends Controller
     {
         try {
             $categoria = CategoriaTransaccion::findOrFail($id);
+
+            // Solo se pueden eliminar registros propios del usuario, no los por defecto
+            if ($categoria->usuario_id !== Auth::user()->id_usuario) {
+                return back()->withErrors(['error' => 'No autorizado']);
+            }
 
             // Verificar si tiene transacciones asociadas
             if ($categoria->transacciones()->count() > 0) {

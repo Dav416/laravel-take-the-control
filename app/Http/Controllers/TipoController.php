@@ -16,7 +16,12 @@ class TipoController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Tipo::with(['categoria']);
+            // Mostrar tipos del usuario y tipos por defecto (sin usuario_id)
+            $query = Tipo::where(function($q) {
+                    $q->where('usuario_id', Auth::user()->id_usuario)
+                      ->orWhereNull('usuario_id');
+                })
+                ->with(['categoria']);
 
             $tipos = $query->orderBy('fecha_creacion', 'desc')->paginate(15);
 
@@ -52,7 +57,7 @@ class TipoController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nombre_tipo' => 'required|string|max:55|unique:tipos,nombre_tipo',
+                'nombre_tipo' => 'required|string|max:55|unique:tipos,nombre_tipo,NULL,id_tipo,usuario_id,' . Auth::user()->id_usuario,
                 'descripcion_tipo' => 'nullable|string',
                 'categoria_tipo_id' => 'required|exists:categorias_tipos,id_categoria_tipo',
             ]);
@@ -81,7 +86,12 @@ class TipoController extends Controller
      */
     public function show($id)
     {
-        $tipo = Tipo::with('categoria')->findOrFail($id);
+        $tipo = Tipo::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)
+                  ->orWhereNull('usuario_id');
+            })
+            ->with('categoria')
+            ->findOrFail($id);
 
         if (request()->wantsJson()) {
             return response()->json($tipo);
@@ -99,7 +109,8 @@ class TipoController extends Controller
             return redirect()->route('login');
         }
 
-        $tipo = Tipo::findOrFail($id);
+        $tipo = Tipo::where('usuario_id', Auth::user()->id_usuario)
+            ->findOrFail($id);
         $categorias = CategoriaTipo::orderBy('nombre_categoria_tipo')->get();
 
         return view('tipos.edit', compact('tipo', 'categorias'));
@@ -111,10 +122,11 @@ class TipoController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $tipo = Tipo::findOrFail($id);
+            $tipo = Tipo::where('usuario_id', Auth::user()->id_usuario)
+                ->findOrFail($id);
 
             $validated = $request->validate([
-                'nombre_tipo' => 'required|string|max:55|unique:tipos,nombre_tipo,' . $id . ',id_tipo',
+                'nombre_tipo' => 'required|string|max:55|unique:tipos,nombre_tipo,' . $id . ',id_tipo,usuario_id,' . Auth::user()->id_usuario,
                 'descripcion_tipo' => 'nullable|string',
                 'categoria_tipo_id' => 'required|exists:categorias_tipos,id_categoria_tipo',
             ]);
@@ -144,12 +156,20 @@ class TipoController extends Controller
     public function destroy(Request $request, Tipo $tipo)
     {
         try {
-            // Verificar si tiene tipos asociados
-            if ($tipo->categoria()->count() > 0) {
+            // Solo se pueden eliminar registros del usuario autenticado, no los por defecto
+            if ($tipo->usuario_id !== Auth::user()->id_usuario) {
                 if ($request->wantsJson()) {
-                    return response()->json(['error' => 'No se puede eliminar un tipo con categoria asociada'], 400);
+                    return response()->json(['error' => 'No autorizado'], 403);
                 }
-                return back()->withErrors(['error' => 'No se puede eliminar un tipo con categoria asociada']);
+                return back()->withErrors(['error' => 'No autorizado']);
+            }
+
+            // Verificar si tiene transacciones asociadas
+            if ($tipo->transacciones()->count() > 0) {
+                if ($request->wantsJson()) {
+                    return response()->json(['error' => 'No se puede eliminar un tipo con transacciones asociadas'], 400);
+                }
+                return back()->withErrors(['error' => 'No se puede eliminar un tipo con transacciones asociadas']);
             }
 
             $tipo->delete();
