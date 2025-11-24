@@ -15,17 +15,23 @@ return new class extends Migration
 
             // Columnas FK
             $table->unsignedBigInteger('categoria_tipo_id')->nullable();
+            $table->unsignedBigInteger('usuario_id')->nullable();
 
             $table->timestamp('fecha_creacion')->useCurrent();
             $table->timestamp('fecha_actualizacion')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('fecha_eliminacion')->nullable();
-        });
 
-        Schema::table('tipos', function (Blueprint $table) {
+            // Relaciones
             $table->foreign('categoria_tipo_id', 'fk_tipos_categoria')
                 ->references('id_categoria_tipo')
                 ->on('categorias_tipos')
                 ->nullOnDelete();
+
+            $table->foreign('usuario_id', 'fk_tipos_usuario')
+                ->references('id_usuario')
+                ->on('usuarios')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
