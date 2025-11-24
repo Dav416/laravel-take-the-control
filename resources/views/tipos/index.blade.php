@@ -135,12 +135,21 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group" role="group">
-                                <a href="{{ route('tipos.edit', $tipo->id_tipo) }}"
-                                   class="btn btn-sm btn-warning"
-                                   title="Editar">
-                                    Editar
-                                </a>
-                                @if($tipo->transacciones->count() === 0)
+                                @if($tipo->usuario_id)
+                                    <a href="{{ route('tipos.edit', $tipo->id_tipo) }}"
+                                       class="btn btn-sm btn-warning"
+                                       title="Editar">
+                                        Editar
+                                    </a>
+                                @else
+                                    <button type="button"
+                                            class="btn btn-sm btn-secondary"
+                                            disabled
+                                            title="No se puede editar registros por defecto del sistema">
+                                        📝
+                                    </button>
+                                @endif
+                                @if($tipo->usuario_id && $tipo->transacciones->count() === 0)
                                     <form action="{{ route('tipos.destroy', $tipo->id_tipo) }}"
                                           method="POST"
                                           class="d-inline"
@@ -157,7 +166,7 @@
                                     <button type="button"
                                             class="btn btn-sm btn-secondary"
                                             disabled
-                                            title="No se puede eliminar (tiene transacciones asociadas)">
+                                            title="{{ $tipo->usuario_id ? 'No se puede eliminar (tiene transacciones asociadas)' : 'No se puede eliminar registros por defecto del sistema' }}">
                                         🔒
                                     </button>
                                 @endif

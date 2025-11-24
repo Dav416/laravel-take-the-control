@@ -131,12 +131,21 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group" role="group">
-                                <a href="{{ route('categorias-proyecciones.edit', $categoria->id_categoria_proyeccion) }}"
-                                   class="btn btn-sm btn-warning"
-                                   title="Editar">
-                                    Editar
-                                </a>
-                                @if($categoria->proyecciones_count === 0)
+                                @if($categoria->usuario_id)
+                                    <a href="{{ route('categorias-proyecciones.edit', $categoria->id_categoria_proyeccion) }}"
+                                       class="btn btn-sm btn-warning"
+                                       title="Editar">
+                                        Editar
+                                    </a>
+                                @else
+                                    <button type="button"
+                                            class="btn btn-sm btn-secondary"
+                                            disabled
+                                            title="No se puede editar registros por defecto del sistema">
+                                        📝
+                                    </button>
+                                @endif
+                                @if($categoria->usuario_id && $categoria->proyecciones_count === 0)
                                     <form action="{{ route('categorias-proyecciones.destroy', $categoria->id_categoria_proyeccion) }}"
                                           method="POST"
                                           class="d-inline"
@@ -153,7 +162,7 @@
                                     <button type="button"
                                             class="btn btn-sm btn-secondary"
                                             disabled
-                                            title="No se puede eliminar (tiene proyecciones asociadas)">
+                                            title="{{ $categoria->usuario_id ? 'No se puede eliminar (tiene proyecciones asociadas)' : 'No se puede eliminar registros por defecto del sistema' }}">
                                         🔒
                                     </button>
                                 @endif

@@ -10,7 +10,7 @@
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Mi App</a>
+            <a class="navbar-brand" href="{{ route('dashboard') }}">Take The Control</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
