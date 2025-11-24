@@ -117,14 +117,47 @@ class Usuario extends Authenticatable
     {
         static::deleting(function ($usuario) {
             if ($usuario->isForceDeleting()) {
+                $usuario->tipos()->forceDelete();
+                $usuario->categoriasTransacciones()->forceDelete();
+                $usuario->entidadesFinancieras()->forceDelete();
+                $usuario->categoriasProyecciones()->forceDelete();
                 $usuario->proyeccionesFinancieras()->forceDelete();
                 $usuario->transacciones()->forceDelete();
                 $usuario->saldosDisponibles()->forceDelete();
             } else {
+                $usuario->tipos()->delete();
+                $usuario->categoriasTransacciones()->delete();
+                $usuario->entidadesFinancieras()->delete();
+                $usuario->categoriasProyecciones()->delete();
                 $usuario->proyeccionesFinancieras()->delete();
                 $usuario->transacciones()->delete();
+                $usuario->saldosDisponibles()->delete();
             }
         });
+    }
+
+    // 🔹 Relación con Tipos
+    public function tipos()
+    {
+        return $this->hasMany(Tipo::class, 'usuario_id', 'id_usuario');
+    }
+
+    // 🔹 Relación con Categorías de Transacciones
+    public function categoriasTransacciones()
+    {
+        return $this->hasMany(CategoriaTransaccion::class, 'usuario_id', 'id_usuario');
+    }
+
+    // 🔹 Relación con Entidades Financieras
+    public function entidadesFinancieras()
+    {
+        return $this->hasMany(EntidadFinanciera::class, 'usuario_id', 'id_usuario');
+    }
+
+    // 🔹 Relación con Categorías de Proyecciones
+    public function categoriasProyecciones()
+    {
+        return $this->hasMany(CategoriaProyeccion::class, 'usuario_id', 'id_usuario');
     }
 
     // 🔹 Relación con Proyecciones Financieras

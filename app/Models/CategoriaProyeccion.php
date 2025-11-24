@@ -20,7 +20,8 @@ class CategoriaProyeccion extends Model
 
     protected $fillable = [
         'nombre_categoria_proyeccion',
-        'descripcion_categoria_proyeccion', // 🔹 Ajustado nombre más coherente
+        'descripcion_categoria_proyeccion',
+        'usuario_id',
     ];
 
     protected $casts = [
@@ -35,6 +36,14 @@ class CategoriaProyeccion extends Model
     public function getRouteKeyName()
     {
         return 'id_categoria_proyeccion';
+    }
+
+    /**
+     * Relación: Una categoría de proyección pertenece a un usuario
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id_usuario');
     }
 
     // Relación con Proyecciones Financieras
