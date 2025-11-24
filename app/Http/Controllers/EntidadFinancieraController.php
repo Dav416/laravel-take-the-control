@@ -13,7 +13,11 @@ class EntidadFinancieraController extends Controller
     {
 
         try {
-            $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->paginate(15);
+            $entidades = EntidadFinanciera::where(function($q) {
+                    $q->where('usuario_id', Auth::user()->id_usuario)
+                      ->orWhereNull('usuario_id');
+                })
+                ->orderBy('nombre_entidad_financiera')->paginate(15);
 
             if ($request->wantsJson()) {
                 return response()->json($entidades);
@@ -53,7 +57,11 @@ class EntidadFinancieraController extends Controller
 
     public function show($id)
     {
-        $entidad = EntidadFinanciera::findOrFail($id);
+        $entidad = EntidadFinanciera::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)
+                  ->orWhereNull('usuario_id');
+            })
+            ->findOrFail($id);
 
         if (request()->wantsJson()) {
             return response()->json($entidad);
@@ -68,14 +76,16 @@ class EntidadFinancieraController extends Controller
             return redirect()->route('login');
         }
 
-        $entidad = EntidadFinanciera::findOrFail($id);
+        $entidad = EntidadFinanciera::where('usuario_id', Auth::user()->id_usuario)
+            ->findOrFail($id);
         return view('entidades.edit', compact('entidad'));
     }
 
     public function update(Request $request, $id)
     {
         try {
-            $entidad = EntidadFinanciera::findOrFail($id);
+            $entidad = EntidadFinanciera::where('usuario_id', Auth::user()->id_usuario)
+                ->findOrFail($id);
 
             $validated = $request->validate([
                 'nombre_entidad_financiera' => 'sometimes|string|max:255',
@@ -95,6 +105,11 @@ class EntidadFinancieraController extends Controller
     {
         try {
             $entidad = EntidadFinanciera::findOrFail($id);
+            
+            // Solo se pueden eliminar registros propios del usuario, no los por defecto
+            if ($entidad->usuario_id !== Auth::user()->id_usuario) {
+                return back()->withErrors(['error' => 'No autorizado']);
+            }
 
             // Verificar si tiene transacciones asociadas
             if ($entidad->transacciones()->count() > 0) {
@@ -105,7 +120,7 @@ class EntidadFinancieraController extends Controller
 
             $entidad->delete();
 
-            return redirect()->route('entidades.index')->with('error', 'Entidad eliminada correctamente');
+            return redirect()->route('entidades.index')->with('success', 'Entidad eliminada correctamente');
         } catch (\Exception $e) {
             Log::error('Error eliminando entidad: '.$e->getMessage());
             return back()->withErrors(['error' => 'Error eliminando entidad']);

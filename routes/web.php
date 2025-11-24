@@ -27,9 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('usuarios', UsuarioController::class);
 
     // Categorías de Transacciones CRUD
-    Route::prefix('categorias-transacciones')->name('categorias.')->group(function () {
-        Route::resource('/', CategoriaTransaccionController::class)->parameters(['' => 'categoria']);
-    });
+    Route::resource('categorias', CategoriaTransaccionController::class);
 
     // Tipos de Transacciones CRUD
     Route::resource('tipos', TipoController::class);

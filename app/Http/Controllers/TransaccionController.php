@@ -55,9 +55,15 @@ class TransaccionController extends Controller
             return redirect()->route('login');
         }
 
-        $tipos = Tipo::orderBy('nombre_tipo')->get();
-        $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
-        $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
+        $tipos = Tipo::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)->orWhereNull('usuario_id');
+            })->orderBy('nombre_tipo')->get();
+        $categorias = CategoriaTransaccion::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)->orWhereNull('usuario_id');
+            })->orderBy('nombre_categoria_transaccion')->get();
+        $entidades = EntidadFinanciera::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)->orWhereNull('usuario_id');
+            })->orderBy('nombre_entidad_financiera')->get();
         $proyecciones = ProyeccionFinanciera::where('usuario_id', Auth::id())
             ->orderBy('nombre_proyeccion_financiera')->get();
 
@@ -100,6 +106,7 @@ class TransaccionController extends Controller
     public function show($id)
     {
         $transaccion = Transaccion::with(['tipo', 'categoria', 'entidadFinanciera', 'proyeccionFinanciera', 'usuario'])
+            ->where('usuario_id', Auth::id())
             ->findOrFail($id);
 
         return view('transacciones.show', compact('transaccion'));
@@ -116,9 +123,15 @@ class TransaccionController extends Controller
 
         $transaccion = Transaccion::where('usuario_id', Auth::id())->findOrFail($id);
 
-        $tipos = Tipo::orderBy('nombre_tipo')->get();
-        $categorias = CategoriaTransaccion::orderBy('nombre_categoria_transaccion')->get();
-        $entidades = EntidadFinanciera::orderBy('nombre_entidad_financiera')->get();
+        $tipos = Tipo::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)->orWhereNull('usuario_id');
+            })->orderBy('nombre_tipo')->get();
+        $categorias = CategoriaTransaccion::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)->orWhereNull('usuario_id');
+            })->orderBy('nombre_categoria_transaccion')->get();
+        $entidades = EntidadFinanciera::where(function($q) {
+                $q->where('usuario_id', Auth::user()->id_usuario)->orWhereNull('usuario_id');
+            })->orderBy('nombre_entidad_financiera')->get();
         $proyecciones = ProyeccionFinanciera::where('usuario_id', Auth::id())
             ->orderBy('nombre_proyeccion_financiera')->get();
 
