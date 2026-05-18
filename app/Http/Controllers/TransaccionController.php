@@ -89,12 +89,17 @@ class TransaccionController extends Controller
             // Asignar usuario autenticado
             $validated['usuario_id'] = Auth::id();
 
+            $this->validarSaldoProyeccion($validated);
+
             Transaccion::create($validated);
             // El Observer actualizará automáticamente el saldo
 
             return redirect()->route('transacciones.index')
                 ->with('success', 'Transacción creada correctamente');
         } catch (\Exception $e) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                throw $e;
+            }
             Log::error('Error creando transacción: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Error creando transacción'])->withInput();
         }
@@ -156,12 +161,18 @@ class TransaccionController extends Controller
                 'proyeccion_financiera_id' => 'nullable|exists:proyecciones_financieras,id_proyeccion_financiera',
             ]);
 
+            $this->validarTipoInmutableEnProyeccion($transaccion, (int) $validated['tipo_id']);
+            $this->validarSaldoProyeccion($validated, $transaccion->id_transaccion);
+
             $transaccion->update($validated);
             // El Observer actualizará automáticamente el saldo
 
             return redirect()->route('transacciones.index')
                 ->with('success', 'Transacción actualizada correctamente');
         } catch (\Exception $e) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                throw $e;
+            }
             Log::error('Error actualizando transacción: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Error actualizando transacción'])->withInput();
         }
@@ -279,6 +290,55 @@ class TransaccionController extends Controller
         } catch (\Exception $e) {
             Log::error('Error obteniendo historial de saldos: ' . $e->getMessage());
             return response()->json(['error' => 'Error obteniendo historial'], 500);
+        }
+    }
+
+    /**
+     * Lanza ValidationException si se intenta cambiar el tipo de una transacción vinculada a una proyección.
+     * El tipo es inmutable una vez que la transacción está asociada a una proyección.
+     */
+    private function validarTipoInmutableEnProyeccion(Transaccion $transaccion, int $nuevoTipoId): void
+    {
+        if (!$transaccion->proyeccion_financiera_id) {
+            return;
+        }
+
+        if ((int) $transaccion->tipo_id === $nuevoTipoId) {
+            return;
+        }
+
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'tipo_id' => ['El tipo de una transacción vinculada a una proyección no puede modificarse. Cree un nuevo registro o elimine este.'],
+        ]);
+    }
+
+    /**
+     * Lanza ValidationException si un egreso vinculado a proyección supera el saldo disponible.
+     */
+    private function validarSaldoProyeccion(array $data, ?int $excludeTransaccionId = null): void
+    {
+        $proyeccionId = $data['proyeccion_financiera_id'] ?? null;
+        if (!$proyeccionId) {
+            return;
+        }
+
+        $tipo = Tipo::find($data['tipo_id']);
+        $esIngreso = $tipo && $tipo->categoria_tipo_id === 1;
+
+        if ($esIngreso) {
+            return;
+        }
+
+        $proyeccion     = ProyeccionFinanciera::findOrFail($proyeccionId);
+        $disponible     = $proyeccion->saldoDisponibleParaEgreso($excludeTransaccionId);
+        $valorSolicitado = (float) $data['valor_transaccion'];
+
+        if ($valorSolicitado > $disponible) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'valor_transaccion' => [
+                    "El egreso ($valorSolicitado) supera el saldo disponible de la proyección ($disponible)."
+                ],
+            ]);
         }
     }
 

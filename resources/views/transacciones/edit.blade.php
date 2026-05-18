@@ -74,9 +74,16 @@
                             <label for="tipo_id" class="form-label">
                                 Tipo <span class="text-danger">*</span>
                             </label>
+                            @if($transaccion->proyeccion_financiera_id)
+                                <div class="alert alert-info py-2 mb-2">
+                                    <small>El tipo no puede modificarse en transacciones vinculadas a una proyección. Para cambiar el tipo, elimine este registro y cree uno nuevo.</small>
+                                </div>
+                                <input type="hidden" name="tipo_id" value="{{ $transaccion->tipo_id }}">
+                            @endif
                             <select class="form-select @error('tipo_id') is-invalid @enderror"
                                     id="tipo_id"
-                                    name="tipo_id"
+                                    @if(!$transaccion->proyeccion_financiera_id) name="tipo_id" @endif
+                                    {{ $transaccion->proyeccion_financiera_id ? 'disabled' : '' }}
                                     required>
                                 <option value="">Seleccione un tipo</option>
                                 @foreach($tipos as $tipo)

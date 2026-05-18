@@ -28,6 +28,7 @@ class Tipo extends Model
         'fecha_creacion' => 'datetime',
         'fecha_actualizacion' => 'datetime',
         'fecha_eliminacion' => 'datetime',
+        'categoria_tipo_id' => 'integer',
     ];
 
     /**
