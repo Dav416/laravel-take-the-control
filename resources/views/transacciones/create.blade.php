@@ -81,6 +81,7 @@
                                 <option value="">Seleccione un tipo</option>
                                 @foreach($tipos as $tipo)
                                     <option value="{{ $tipo->id_tipo }}"
+                                            data-categoria="{{ $tipo->categoria_tipo_id }}"
                                             {{ old('tipo_id') == $tipo->id_tipo ? 'selected' : '' }}>
                                         {{ $tipo->nombre_tipo }}
                                     </option>
@@ -169,4 +170,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/transacciones.js') }}"></script>
 @endsection

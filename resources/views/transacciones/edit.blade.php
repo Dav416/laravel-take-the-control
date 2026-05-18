@@ -88,8 +88,13 @@
                                 <option value="">Seleccione un tipo</option>
                                 @foreach($tipos as $tipo)
                                     <option value="{{ $tipo->id_tipo }}"
+                                            data-categoria="{{ $tipo->categoria_tipo_id }}"
                                             {{ old('tipo_id', $transaccion->tipo_id) == $tipo->id_tipo ? 'selected' : '' }}>
-                                        {{ $tipo->nombre_tipo }}
+                                        @if($transaccion->proyeccion_financiera_id)
+                                            {{ $tipo->categoria_tipo_id === 1 ? 'Aporte a meta' : 'Retiro de meta' }}
+                                        @else
+                                            {{ $tipo->nombre_tipo }}
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>
@@ -176,4 +181,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/transacciones.js') }}"></script>
 @endsection

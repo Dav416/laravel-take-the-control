@@ -104,9 +104,17 @@
                                 {{ $valueSymbol }}${{ number_format($transaccion->valor_transaccion, 0, ',', '.') }}
                             </td>
                             <td>
-                                <span class="badge {{ $transaccion->tipo->categoria_tipo_id === 1  ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $transaccion->tipo->nombre_tipo ?? 'N/A' }}
-                                </span>
+                                @if($transaccion->proyeccion_financiera_id)
+                                    @if($transaccion->tipo->categoria_tipo_id === 1)
+                                        <span class="badge" style="background-color:#d8b4fe;color:#5b21b6;">Aporte a meta</span>
+                                    @else
+                                        <span class="badge" style="background-color:#fed7aa;color:#c2410c;">Retiro de meta</span>
+                                    @endif
+                                @else
+                                    <span class="badge {{ $transaccion->tipo->categoria_tipo_id === 1 ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $transaccion->tipo->nombre_tipo ?? 'N/A' }}
+                                    </span>
+                                @endif
                             </td>
                             <td>{{ $transaccion->categoria->nombre_categoria_transaccion ?? 'N/A' }}</td>
                             <td>{{ $transaccion->entidadFinanciera->nombre_entidad_financiera ?? 'N/A' }}</td>
